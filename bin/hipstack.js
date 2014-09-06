@@ -10,7 +10,6 @@
 var dockerProxy = require( '../' );
 var commander  = require( 'commander' );
 var os = require( 'os' );
-var pid = require( '../lib/common/pid' );
 
 commander._name = require( '../package' ).name;
 

@@ -53,7 +53,9 @@
   "private": true,
   "author": "UD <team@usabilitydynamics.com>",
   "dependencies": {
+    "cli-table": "^0.3.0",
     "commander": "^2.3.0",
+    "dockerode": "^2.0.3",
     "load-grunt-tasks": "^0.6.0",
     "time-grunt": "^1.0.0"
   }

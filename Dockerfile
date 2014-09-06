@@ -16,6 +16,14 @@ USER          root
 VOLUME        /var/log
 VOLUME        /var/www
 
+ADD           bin                                   /usr/local/src/hipstack/bin
+ADD           lib                                   /usr/local/src/hipstack/lib
+ADD           node_modules                          /usr/local/src/hipstack/node_modules
+ADD           static/etc                            /usr/local/src/hipstack/static/etc
+ADD           static/public                         /usr/local/src/hipstack/static/public
+ADD           package.json                          /usr/local/src/hipstack/package.json
+ADD           readme.md                             /usr/local/src/hipstack/readme.md
+
 RUN           \
               groupadd --gid 500 hipstack && \
               useradd --create-home --shell /bin/bash --groups adm,sudo --uid 500 -g hipstack hipstack && \
@@ -27,18 +35,23 @@ RUN           \
               wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add - && \
               echo deb http://dl.hhvm.com/ubuntu trusty main | tee /etc/apt/sources.list.d/hhvm.list && \
               apt-get -y update && \
-              apt-get -y upgrade && \
-              apt-get -y install hhvm supervisor nano && \
-              npm install --global forever mocha should chai grunt-cli express
+              apt-get -y upgrade
 
-ADD           bin                                   /usr/local/src/hipstack/bin
-ADD           lib                                   /usr/local/src/hipstack/lib
-ADD           static/etc                            /usr/local/src/hipstack/static/etc
-ADD           package.json                          /usr/local/src/hipstack/package.json
-ADD           readme.md                             /usr/local/src/hipstack/readme.md
+RUN           \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 && \
+              npm install -g forever mocha should chai grunt-cli express && \
+              a2enmod rewrite;
 
+RUN           \
+              cd /tmp && \
+              wget -O /tmp/mod-pagespeed.deb https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb && \
+              dpkg -i /tmp/mod-pagespeed.deb && \
+              apt-get -f install
+
+ADD           static/etc/apache2/apache2.conf       /etc/apache2/sites-enabled/apache2.conf
 ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/default.conf
 ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
+ADD           static/etc/default/apache2.sh         /etc/default/apache2
 ADD           static/etc/default/hipstack.sh        /etc/default/hipstack
 ADD           static/etc/init.d/hipstack.sh         /etc/init.d/hipstack
 
@@ -63,8 +76,13 @@ RUN           \
               npm link /usr/local/src/hipstack
 
 RUN           \
+              update-rc.d hhvm defaults && \
+              update-rc.d apache2 defaults
+
+RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+              chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
 EXPOSE        80
