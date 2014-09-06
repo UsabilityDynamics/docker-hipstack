@@ -3,7 +3,7 @@
 ##
 ##  export BUILD_ORGANIZATION=usabilitydynamics
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.0
+##  export BUILD_VERSION=0.1.1
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
 ##  docker run --rm --volume=$(pwåd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
@@ -11,6 +11,7 @@
 ## @ver 0.2.1
 ## @author potanin@UD
 #################################################################
+
 
 FROM          dockerfile/nodejs
 MAINTAINER    Usability Dynamics, Inc. "http://usabilitydynamics.com"
@@ -29,7 +30,9 @@ ADD           readme.md                             /usr/local/src/hipstack/read
 RUN           \
               groupadd --gid 500 hipstack && \
               useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
-              mkdir /home/hipstack/.ssh
+              mkdir /home/hipstack/.ssh && \
+              useradd -G hipstack apache && \
+              useradd -G hipstack hhvm
 
 RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
@@ -44,9 +47,12 @@ RUN           \
               export NODE_ENV=development && \
               apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz && \
               npm install -g forever mocha should chai grunt-cli express && \
-              a2enmod rewrite && \
-              useradd -G hipstack apache && \
-              useradd -G hipstack hhvm
+              a2enmod \
+                rewrite \
+                headers \
+                remoteip \
+                proxy \
+                vhost_alias
 
 RUN           \
               curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -84,14 +90,14 @@ RUN           \
               mkdir -p /var/log/hipstack && \
               mkdir -p /var/cache/hipstack && \
               mkdir -p /var/run/hipstack && \
-              mkdir -p /var/run/supervisor && \
-              mkdir -p /var/log/supervisor && \
-              chown -R hipstack:hipstack   /var/log/supervisor && \
+              mkdir -p /var/run/supervisord && \
+              mkdir -p /var/log/supervisord && \
+              chown -R hipstack:hipstack   /var/log/supervisord && \
               chown -R apache:hipstack     /var/log/pagespeed && \
               chown -R apache:hipstack     /var/log/apache2 && \
               chown -R hhvm:hipstack       /var/log/hhvm && \
               chown -R hipstack:hipstack   /var/run/hhvm && \
-              chown -R hipstack:hipstack   /var/run/supervisor && \
+              chown -R hipstack:hipstack   /var/run/supervisord && \
               chown -R hipstack:hipstack   /var/run/apache2 && \
               chown -R hipstack:hipstack   /var/run/hipstack && \
               chown -R hipstack:hipstack   /var/www && \
@@ -99,6 +105,8 @@ RUN           \
               chmod g+s /var/www && \
               chown hipstack /var/log/pagespeed && \
               chown hipstack /var/log/hipstack && \
+              chown hipstack /var/run && \
+              chgrp hipstack /var/log && \
               chgrp hipstack /var/lib/hipstack && \
               chgrp hipstack /var/cache/hipstack && \
               chgrp hipstack /tmp
@@ -113,6 +121,7 @@ RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
               rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+              rm -rf /etc/apache2/ && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
@@ -120,9 +129,9 @@ EXPOSE        80
 
 ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
-ENV           APACHE_RUN_USER                 hipstack
+ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
-ENV           HHVM_RUN_GROUP                  hipstack
+ENV           HHVM_RUN_GROUP                  hhvm
 ENV           HHVM_RUN_USER                   hipstack
 
 WORKDIR       /var/www

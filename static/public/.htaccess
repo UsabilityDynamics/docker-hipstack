@@ -1,5 +1,5 @@
 # BEGIN EnvironmentHeaders
-<IfModule mod_rewrite.c>
+<IfModule mod_headers.c>
   RequestHeader add X-WP_ENV            "%{WP_ENV}e"              env=WP_ENV
   RequestHeader add X-PHP_ENV           "%{PHP_ENV}e"             env=PHP_ENV
   RequestHeader add X-NODE_ENV          "%{NODE_ENV}e"            env=NODE_ENV

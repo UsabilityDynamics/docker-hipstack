@@ -6,8 +6,8 @@
 CONFIG_FILE="/etc/hhvm/server.ini"
 
 ## User to run the service as.
-RUN_AS_USER="hhvm"
-RUN_AS_GROUP="hipstack"
+RUN_AS_USER=${HHVM_RUN_USER:=hhvm}
+RUN_AS_GROUP=${HHVM_RUN_USER:=hipstack}
 
 #ADDITIONAL_ARGS="-vServer.Port=9000 -vServer.FileSocket=/var/run/hhvm.sock -vLog.Level=Debug -vServer.DefaultDocument=index.php"
 

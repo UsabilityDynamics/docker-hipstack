@@ -4,7 +4,7 @@
 ##
 ##  export BUILD_ORGANIZATION=usabilitydynamics
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.0
+##  export BUILD_VERSION=0.1.1
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
 ##  docker run --rm --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
@@ -16,7 +16,7 @@
 
 BUILD_ORGANIZATION	          ?=usabilitydynamics
 BUILD_REPOSITORY		          ?=hipstack
-BUILD_VERSION				          ?=0.1.0
+BUILD_VERSION				          ?=0.1.1
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 
 CONTAINER_NAME			          ?=hipstack

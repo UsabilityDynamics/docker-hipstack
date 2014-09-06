@@ -1,6 +1,6 @@
 {
   "name": "hipstack",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Docker container bootstrapper.",
   "main": "lib/hipstack.js",
   "directories": {
