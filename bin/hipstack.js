@@ -209,6 +209,11 @@ commander.command( 'list' )
   .option( '-w, --watch', 'Watch for changes.' )
   .action(  getList );
 
+commander.command( 'install' )
+  .option( '-e, --environment [environment]', 'Which environment to use.', process.env.NODE_ENV || 'production' )
+  .option( '-w, --watch', 'Watch for changes.' )
+  .action( require( '../lib/tasks/install' ) );
+
 commander.command( 'stop' )
   .option( '-e, --environment [environment]', 'Which environment to use.', process.env.NODE_ENV || 'production' )
   .option( '-f, --force', 'Force stop.' )

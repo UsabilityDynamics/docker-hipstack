@@ -1,9 +1,12 @@
 #################################################################
-## UD HHVM
+## HipStack Dockerfile.
 ##
-## docker build -t usabilitydynamics/hhvm:0.1.0 --rm .
+##  export BUILD_ORGANIZATION=usabilitydynamics
+##  export BUILD_REPOSITORY=hipstack
+##  export BUILD_VERSION=0.1.0
 ##
-## * http://ryansechrest.com/2013/08/managing-file-and-folder-permissions-when-deploying-with-git/
+##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
+##  docker run --rm --volume=$(pwåd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
 ##
 ## @ver 0.2.1
 ## @author potanin@UD
@@ -15,7 +18,6 @@ USER          root
 
 VOLUME        /var/tmp
 VOLUME        /var/log
-VOLUME        /var/www
 
 ADD           bin                                   /usr/local/src/hipstack/bin
 ADD           lib                                   /usr/local/src/hipstack/lib
@@ -26,7 +28,7 @@ ADD           readme.md                             /usr/local/src/hipstack/read
 
 RUN           \
               groupadd --gid 500 hipstack && \
-              useradd --create-home --shell /bin/bash --groups adm,sudo --uid 500 -g hipstack hipstack && \
+              useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
               mkdir /home/hipstack/.ssh
 
 RUN           \
@@ -47,6 +49,9 @@ RUN           \
               useradd -G hipstack hhvm
 
 RUN           \
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN           \
               pear channel-update pear.php.net && \
               pear upgrade-all && \
               pear channel-discover pear.phpunit.de && \
@@ -60,17 +65,18 @@ RUN           \
               dpkg -i /tmp/mod-pagespeed.deb && \
               apt-get -f install
 
-ADD           static/etc/apache2/apache2.conf       /etc/apache2/sites-enabled/apache2.conf
-ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/default.conf
+ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
+ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/000-default.conf
 ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
 ADD           static/etc/default/apache2.sh         /etc/default/apache2
 ADD           static/etc/default/hipstack.sh        /etc/default/hipstack
 ADD           static/etc/init.d/hipstack.sh         /etc/init.d/hipstack
+ADD           static/public                         /var/www
 
 RUN           \
-              export NODE_ENV=production && \
               mkdir -p /var/run/hhvm && \
               mkdir -p /var/log/hhvm && \
+              mkdir -p /var/log/apache2 && \
               mkdir -p /var/log/pagespeed && \
               mkdir -p /etc/hipstack && \
               mkdir -p /etc/hipstack/ssl && \
@@ -80,23 +86,32 @@ RUN           \
               mkdir -p /var/run/hipstack && \
               mkdir -p /var/run/supervisor && \
               mkdir -p /var/log/supervisor && \
-              chgrp -R hipstack /var/lib/hipstack && \
-              chgrp -R hipstack /var/www && \
+              chown -R hipstack:hipstack   /var/log/supervisor && \
+              chown -R apache:hipstack     /var/log/pagespeed && \
+              chown -R apache:hipstack     /var/log/apache2 && \
+              chown -R hhvm:hipstack       /var/log/hhvm && \
+              chown -R hipstack:hipstack   /var/run/hhvm && \
+              chown -R hipstack:hipstack   /var/run/supervisor && \
+              chown -R hipstack:hipstack   /var/run/apache2 && \
+              chown -R hipstack:hipstack   /var/run/hipstack && \
+              chown -R hipstack:hipstack   /var/www && \
               chmod g-w /var/www && \
               chmod g+s /var/www && \
-              chgrp hipstack /var/log/pagespeed && \
-              chgrp hipstack /var/log/hipstack && \
-              chgrp hipstack /var/run/hipstack && \
+              chown hipstack /var/log/pagespeed && \
+              chown hipstack /var/log/hipstack && \
+              chgrp hipstack /var/lib/hipstack && \
               chgrp hipstack /var/cache/hipstack && \
-              chgrp hipstack /tmp && \
-              npm link /usr/local/src/hipstack
+              chgrp hipstack /tmp
 
 RUN           \
+              export NODE_ENV=production && \
+              npm link /usr/local/src/hipstack && \
               update-rc.d hhvm defaults && \
               update-rc.d hipstack defaults
 
 RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
+              rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
@@ -110,7 +125,7 @@ ENV           APACHE_RUN_GROUP                hipstack
 ENV           HHVM_RUN_GROUP                  hipstack
 ENV           HHVM_RUN_USER                   hipstack
 
-WORKDIR       /home/hipstack
+WORKDIR       /var/www
 
 ENTRYPOINT    [ "/usr/local/bin/hipstack.entrypoint" ]
 CMD           [ "/bin/bash" ]

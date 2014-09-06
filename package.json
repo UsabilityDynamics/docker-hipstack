@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "hipstack start",
+    "install": "hipstack install",
     "reload": "hipstack reload",
     "restart": "hipstack restart",
     "stop": "hipstack stop",
