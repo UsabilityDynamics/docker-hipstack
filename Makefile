@@ -1,10 +1,13 @@
 ##
+# Make Docker HipStack
 #
 # $(git branch | sed -n '/\* /s///p')
 #
+# export BUILD_ORGANIZATION=usabilitydynamics
+# export BUILD_REPOSITORY=hipstack
+# export BUILD_VERSION=0.1.0
 #
-# ### Running
-# * We volume-mount that docker unix sock file using the DOCKER_SOCK_PATH environment variable, which we set to /var/run/docker.sock by default.
+# docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
 #
 ##
 
@@ -34,7 +37,7 @@ start:
 	run
 
 tests:
-	@echo "Testing Docker Proxy <${BUILD_BRANCH}> branch."
+	@echo "Testing HipStack <${BUILD_BRANCH}> branch."
 	@mocha test/unit
 	@mocha test/functional
 	@mocha test/integration

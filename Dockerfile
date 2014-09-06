@@ -13,12 +13,12 @@ FROM          dockerfile/nodejs
 MAINTAINER    Usability Dynamics, Inc. "http://usabilitydynamics.com"
 USER          root
 
+VOLUME        /var/tmp
 VOLUME        /var/log
 VOLUME        /var/www
 
 ADD           bin                                   /usr/local/src/hipstack/bin
 ADD           lib                                   /usr/local/src/hipstack/lib
-ADD           node_modules                          /usr/local/src/hipstack/node_modules
 ADD           static/etc                            /usr/local/src/hipstack/static/etc
 ADD           static/public                         /usr/local/src/hipstack/static/public
 ADD           package.json                          /usr/local/src/hipstack/package.json
@@ -38,11 +38,21 @@ RUN           \
               apt-get -y upgrade
 
 RUN           \
-              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 && \
+              export DEBIAN_FRONTEND=noninteractive && \
+              export NODE_ENV=development && \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz && \
               npm install -g forever mocha should chai grunt-cli express && \
               a2enmod rewrite && \
               useradd -G hipstack apache && \
               useradd -G hipstack hhvm
+
+RUN           \
+              pear channel-update pear.php.net && \
+              pear upgrade-all && \
+              pear channel-discover pear.phpunit.de && \
+              pear channel-discover components.ez.no && \
+              pear channel-discover pear.symfony-project.com && \
+              pecl install -f xhprof
 
 RUN           \
               cd /tmp && \
@@ -83,8 +93,6 @@ RUN           \
 
 RUN           \
               update-rc.d hhvm defaults && \
-              update-rc.d supervisor defaults && \
-              update-rc.d apache2 defaults && \
               update-rc.d hipstack defaults
 
 RUN           \

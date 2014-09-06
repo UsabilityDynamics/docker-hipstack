@@ -5,6 +5,7 @@ default:
     host: "208.52.164.213:16423"
     port: 16423
   pagespeed:
+    enabled: true
     filters:
       disable:
         - add_head
