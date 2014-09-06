@@ -20,7 +20,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="HHVM FastCGI Daemon"
 NAME=hhvm
 DAEMON=/usr/bin/hhvm
-PIDFILE=/var/run/hhvm.pid
+PIDFILE=/var/run/hhvm/hhvm.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
 # Exit if the package is not installed
@@ -29,8 +29,8 @@ SCRIPTNAME=/etc/init.d/$NAME
 # Default values. This values can be overwritten in '/etc/default/hhvm'
 CONFIG_FILE="/etc/hhvm/server.ini"
 SYSTEM_CONFIG_FILE="/etc/hhvm/php.ini"
-RUN_AS_USER="www-data"
-RUN_AS_GROUP="www-data"
+RUN_AS_USER="hipstack"
+RUN_AS_GROUP="hipstack"
 ADDITIONAL_ARGS=""
 
 # Read configuration variable file if it is present

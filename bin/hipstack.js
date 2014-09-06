@@ -45,7 +45,16 @@ commander.parse( process.argv );
  * @param settings
  */
 function startService( settings ) {
-  console.log( 'startService!' );
+  console.log( 'startService!', process.env.NODE_ENV );
+
+  var _path = require( 'path' ).join( __dirname, '../static/etc/hipstack.yml');
+
+  var yaml_config = require('node-yaml-config');
+
+  var config = yaml_config.load( _path );
+
+  console.log( require( 'util').inspect( config, { colors: true , depth:1, showHidden: false } ) );
+
 }
 
 /**

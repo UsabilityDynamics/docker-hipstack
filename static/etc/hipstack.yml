@@ -1,0 +1,41 @@
+default:
+  docker:
+    host: "208.52.164.213:16423"
+    port: 16423
+
+development:
+  name: interstate.hipstack
+  branch: develop
+  hostname: interstate.hipstack
+  port: 80
+  webRoot: /var/www/wp-conent/themes/wp-interstate
+  volumes:
+    /vendor/wordpress: '/var/www'
+    /vendor/phpmyadmin: '/var/www/phpmyadmin'
+    /data/uploads: '/var/www/wp-content/uploads'
+
+production:
+  name: interstate.hipstack
+  branch: master
+  hostname: interstate.hipstack
+  port: 80
+  webRoot: /var/www/wp-conent/themes/wp-interstate
+  volumes:
+    /vendor/wordpress: '/var/www'
+    /data/uploads: '/var/www/wp-content/uploads'
+
+test:
+  branch: develop
+  hostname: test.interstate.hipstack
+  port: 80
+  webRoot: /var/www/wp-conent/themes/wp-interstate
+  volumes:
+    /vendor/wordpress: '/var/www'
+    /vendor/phpmyadmin: '/var/www/phpmyadmin'
+    /data/uploads: '/var/www/wp-content/uploads'
+
+future:
+  port: 80
+  webRoot: /var/www/wp-conent/themes/wp-interstate
+  tunnels:
+    3306: orm.internal:3233

@@ -57,6 +57,8 @@ ADD           static/etc/init.d/hipstack.sh         /etc/init.d/hipstack
 
 RUN           \
               export NODE_ENV=production && \
+              mkdir -p /var/run/hhvm && \
+              mkdir -p /var/log/hhvm && \
               mkdir -p /etc/hipstack && \
               mkdir -p /etc/hipstack/ssl && \
               mkdir -p /var/lib/hipstack && \
@@ -77,6 +79,7 @@ RUN           \
 
 RUN           \
               update-rc.d hhvm defaults && \
+              update-rc.d supervisor defaults && \
               update-rc.d apache2 defaults && \
               update-rc.d hipstack defaults
 
@@ -90,6 +93,10 @@ EXPOSE        80
 
 ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
+ENV           APACHE_RUN_USER                 hipstack
+ENV           APACHE_RUN_GROUP                hipstack
+ENV           HHVM_RUN_GROUP                  hipstack
+ENV           HHVM_RUN_USER                   hipstack
 
 WORKDIR       /home/hipstack
 
