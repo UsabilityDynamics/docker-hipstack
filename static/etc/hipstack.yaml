@@ -1,0 +1,23 @@
+service:
+  daemon:
+    name: daemon
+    restart: true
+    workers: 0
+
+  api:
+    name: api
+    restart: true
+    workers: 0
+
+  proxy:
+    name: proxy
+    restart: true
+    workers: 6
+    options:
+      httpKeepAlive: true
+      maxSockets: 100
+
+  static:
+    name: static
+    restart: true
+    workers: 2

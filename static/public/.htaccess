@@ -1,0 +1,11 @@
+# BEGIN EnvironmentHeaders
+<IfModule mod_rewrite.c>
+  RequestHeader add X-WP_ENV            "%{WP_ENV}e"              env=WP_ENV
+  RequestHeader add X-PHP_ENV           "%{PHP_ENV}e"             env=PHP_ENV
+  RequestHeader add X-NODE_ENV          "%{NODE_ENV}e"            env=NODE_ENV
+  RequestHeader add X-USER              "%{USER}e"                env=USER
+  RequestHeader add X-PWD               "%{PWD}e"                 env=PWD
+  RequestHeader add X-DOCKER_HOSTNAME   "%{DOCKER_HOSTNAME}e"     env=DOCKER_HOSTNAME
+  RequestHeader add X-DOCKER_HOST       "%{DOCKER_HOST}e"         env=DOCKER_HOST
+</IfModule>
+# END EnvironmentHeaders
