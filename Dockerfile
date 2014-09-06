@@ -77,7 +77,8 @@ RUN           \
 
 RUN           \
               update-rc.d hhvm defaults && \
-              update-rc.d apache2 defaults
+              update-rc.d apache2 defaults && \
+              update-rc.d hipstack defaults
 
 RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
