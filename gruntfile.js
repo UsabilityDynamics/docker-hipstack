@@ -40,15 +40,6 @@ module.exports = function( grunt ) {
       }
     },
 
-    // Generate JS Coverage Report.
-    jscoverage: {
-      options: {
-        inputDirectory: 'lib',
-        outputDirectory: './static/lib-cov',
-        highlight: true
-      }
-    },
-
     // Watch Files and Trigger Tasks.
     watch: {
       options: {
@@ -63,29 +54,6 @@ module.exports = function( grunt ) {
           'test/*.js'
         ],
         tasks: [ 'test' ]
-      }
-    },
-
-    // Genreate HTML Documents from Markdown Files.
-    markdown: {
-      all: {
-        files: [ {
-          expand: true,
-          src: 'readme.md',
-          dest: 'static/',
-          ext: '.html'
-        }
-        ],
-        options: {
-          templateContext: {},
-          markdownOptions: {
-            gfm: true,
-            codeLines: {
-              before: '<span>',
-              after: '</span>'
-            }
-          }
-        }
       }
     }
 
@@ -103,6 +71,10 @@ module.exports = function( grunt ) {
 
   // Load Custom Tasks.
   grunt.loadTasks( 'lib/tasks' );
+
+  grunt.registerTask( 'default', 'View information', function() {
+    console.log( 'starting server' );
+  });
 
   // Run Tests
   grunt.registerTask( 'test', [ 'mochacli' ] );
@@ -126,6 +98,5 @@ module.exports = function( grunt ) {
   grunt.registerTask( 'list', function() {
     console.log( 'list server' );
   });
-
 
 };

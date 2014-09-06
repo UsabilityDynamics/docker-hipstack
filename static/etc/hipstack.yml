@@ -1,8 +1,30 @@
 default:
   name: interstate.hipstack
+  git: false
   docker:
     host: "208.52.164.213:16423"
     port: 16423
+  pagespeed:
+    filters:
+      disable:
+        - add_head
+      enable:
+        - combine_css
+        - combine_javascript
+        - convert_meta_tags
+        - extend_cache
+        - fallback_rewrite_css_urls
+        - flatten_css_imports
+        - inline_css
+        - inline_import_to_link
+        - inline_javascript
+    originDomains:
+      - localhost/example *.example.com
+      - cdn.example.com
+      - http://styles.example.com/css
+    shardDomains:
+      - https://www.example.com
+      - https://example1.cdn.com,https://example2.cdn.com
 
 development:
   branch: develop

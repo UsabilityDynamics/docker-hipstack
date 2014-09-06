@@ -49,9 +49,15 @@ function startService( settings ) {
 
   var _path = require( 'path' ).join( __dirname, '../static/etc/hipstack.yml');
 
+  var _ = require('lodash');
   var yaml_config = require('node-yaml-config');
 
   var config = yaml_config.load( _path );
+
+  _.defaults( config, {
+    _pwd: process.cwd(),
+    _module: process.mainModule.filename
+  });
 
   console.log( require( 'util').inspect( config, { colors: true , depth:1, showHidden: false } ) );
 

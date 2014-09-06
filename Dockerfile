@@ -40,7 +40,9 @@ RUN           \
 RUN           \
               apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 && \
               npm install -g forever mocha should chai grunt-cli express && \
-              a2enmod rewrite;
+              a2enmod rewrite && \
+              useradd -G hipstack apache && \
+              useradd -G hipstack hhvm
 
 RUN           \
               cd /tmp && \
@@ -59,6 +61,7 @@ RUN           \
               export NODE_ENV=production && \
               mkdir -p /var/run/hhvm && \
               mkdir -p /var/log/hhvm && \
+              mkdir -p /var/log/pagespeed && \
               mkdir -p /etc/hipstack && \
               mkdir -p /etc/hipstack/ssl && \
               mkdir -p /var/lib/hipstack && \
@@ -71,6 +74,7 @@ RUN           \
               chgrp -R hipstack /var/www && \
               chmod g-w /var/www && \
               chmod g+s /var/www && \
+              chgrp hipstack /var/log/pagespeed && \
               chgrp hipstack /var/log/hipstack && \
               chgrp hipstack /var/run/hipstack && \
               chgrp hipstack /var/cache/hipstack && \
