@@ -16,7 +16,6 @@
 ##    --env=GIT_BRANCH=$(git branch | sed -n '/\* /s///p') \
 ##    node npm install
 ##
-##
 #################################################################
 
 BUILD_ORGANIZATION	          ?=usabilitydynamics
