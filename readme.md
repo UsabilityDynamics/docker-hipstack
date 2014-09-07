@@ -4,7 +4,7 @@
 ```
 export BUILD_ORGANIZATION=usabilitydynamics
 export BUILD_REPOSITORY=wordpress
-export BUILD_VERSION=0.1.1
+export BUILD_VERSION=0.1.2
 ```
 
 ### Run Commands

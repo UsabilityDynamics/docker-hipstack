@@ -1,9 +1,9 @@
 #################################################################
 ## HipStack Dockerfile.
 ##
-##  export BUILD_ORGANIZATION=usabilitydynamics
+##  export BUILD_ORGANIZATION=hipstack
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.1
+##  export BUILD_VERSION=0.1.2
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
 ##  docker run --rm --volume=$(pwåd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
@@ -86,6 +86,7 @@ RUN           \
               mkdir -p /var/run/hhvm && \
               mkdir -p /var/log/hhvm && \
               mkdir -p /var/log/apache2 && \
+              mkdir -p /var/run/apache2 && \
               mkdir -p /var/log/pagespeed && \
               mkdir -p /etc/hipstack && \
               mkdir -p /etc/hipstack/ssl && \
@@ -126,7 +127,6 @@ RUN           \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
               rm -rf /var/run/hhvm/** && \
               rm -rv /var/log/hhvm/** && \
-              rm -rv /var/run/apache2/** && \
               rm -rv /var/log/apache2/** && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**

@@ -4,7 +4,7 @@
 ##
 ##  export BUILD_ORGANIZATION=usabilitydynamics
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.1
+##  export BUILD_VERSION=0.1.2
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:latest .
 ##
@@ -21,23 +21,20 @@
 
 BUILD_ORGANIZATION	          ?=usabilitydynamics
 BUILD_REPOSITORY		          ?=hipstack
-BUILD_VERSION				          ?=0.1.1
+BUILD_VERSION				          ?=0.1.2
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal
+PWD                           ?=$(shell pwd)
 
 default: image
 
 install:
-	@docker run \
-	  --rm \
-	  --volume=$(pwd):/data$(pwd) \
-	  --env=NODE_ENV=development \
-	  --env-file=/etc/environment \
-	  --workdir=/data$(pwd) \
-	  node npm install
+	@echo "Installing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
+	@npm install
 
 image:
+  @echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
 restart:
@@ -68,5 +65,6 @@ run:
 	@docker logs ${CONTAINER_NAME}
 
 release:
-	echo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
-	echo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
+	@docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)

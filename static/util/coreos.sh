@@ -1,7 +1,8 @@
 #!/bin/sh
 ##
 ## Notes:
-## * Mae sure that DOCKER_HOST is in /etc/environment so "docker" commands will work.
+## * Make sure that DOCKER_HOST is in /etc/environment so "docker" commands will work.
+## * We volue-mount /core:/core and /root:/root to make sure all SSH, configs, caches are shared with container.
 ##
 ## Start Terminal:
 ## * docker run --rm -it --env-file=/etc/environment --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) andypotanin/node /bin/bash
@@ -10,6 +11,8 @@
 ## Execute Makefile.
 alias make="docker run --rm \
   --env-file=/etc/environment \
+  --env=HOME=/root \
+  --volume=/root:/root \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
   andypotanin/node make ${@}"
@@ -44,6 +47,8 @@ alias mocha="docker run --rm \
 
 ## ComposerJS
 alias composer="docker run --rm \
+  --volume=/core:/core \
+  --volume=/root:/root \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
