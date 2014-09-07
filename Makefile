@@ -1,8 +1,7 @@
 #################################################################
 ## Make Docker HipStack
 ##
-##
-##  export BUILD_ORGANIZATION=usabilitydynamics
+##  export BUILD_ORGANIZATION=hipstack
 ##  export BUILD_REPOSITORY=hipstack
 ##  export BUILD_VERSION=0.1.2
 ##
@@ -18,13 +17,12 @@
 ##
 #################################################################
 
-BUILD_ORGANIZATION	          ?=usabilitydynamics
+BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
 BUILD_VERSION				          ?=0.1.2
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal
-PWD                           ?=$(shell pwd)
 
 default: image
 
@@ -33,7 +31,7 @@ install:
 	@npm install
 
 image:
-  @echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
+	@echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
 restart:
@@ -67,3 +65,4 @@ release:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@docker rm $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
