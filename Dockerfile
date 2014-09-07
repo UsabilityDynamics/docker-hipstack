@@ -19,6 +19,9 @@ USER          root
 
 VOLUME        /var/tmp
 VOLUME        /var/log
+VOLUME        /home/hipstack/.packages
+VOLUME        /home/hipstack/.composer
+VOLUME        /home/hipstack/.composer/cache
 
 ADD           bin                                   /usr/local/src/hipstack/bin
 ADD           lib                                   /usr/local/src/hipstack/lib
@@ -121,11 +124,11 @@ RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
               rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-              rm -rf /etc/apache2/ && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
 EXPOSE        80
+EXPOSE        9000
 
 ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
@@ -133,6 +136,8 @@ ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
 ENV           HHVM_RUN_GROUP                  hhvm
 ENV           HHVM_RUN_USER                   hipstack
+ENV           COMPOSER_HOME                   /home/hipstack/composer
+ENV           COMPOSER_NO_INTERACTION         true
 
 WORKDIR       /var/www
 

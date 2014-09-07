@@ -5,6 +5,8 @@
 ## /usr/local/bin/hipstack.entrypoint pwd
 ## will run the entrypoint scripts and then execute "pwd"
 ##
+## * SupervisorD is ran as root otherwise won't be able to bind to port 80.
+##
 ## /usr/local/bin/hipstack.entrypoint
 ##
 ############################################################
@@ -20,6 +22,7 @@ chown -R hipstack:hipstack    /home/hipstack
 chown -R hipstack:hipstack    /var/www
 chown -R apache:hipstack      /var/log/apache2
 chown -R apache:hipstack      /var/log/pagespeed
+chown -R apache:hipstack      /var/log/supervisord
 chown -R hhvm:hipstack        /var/log/hhvm
 
 ## Cleanup

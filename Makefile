@@ -6,10 +6,15 @@
 ##  export BUILD_REPOSITORY=hipstack
 ##  export BUILD_VERSION=0.1.1
 ##
-##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
-##  docker run --rm --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
+##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:latest .
 ##
-##  ##  $(git branch | sed -n '/\* /s///p')
+##  docker run \
+##    --rm \
+##    --volume=$(pwd):/data$( pwd) \
+##    --workdir=/data$(pwd) \
+##    --env=NODE_ENV=development \
+##    --env=GIT_BRANCH=$(git branch | sed -n '/\* /s///p') \
+##    node npm install
 ##
 ##
 #################################################################
@@ -18,18 +23,22 @@ BUILD_ORGANIZATION	          ?=usabilitydynamics
 BUILD_REPOSITORY		          ?=hipstack
 BUILD_VERSION				          ?=0.1.1
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
-
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal
-CONTAINER_ENTRYPOINT	        ?=/usr/local/bin/hipstack.entrypoint
 
 default: image
 
 install:
-	@docker run --rm --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
+	@docker run \
+	  --rm \
+	  --volume=$(pwd):/data$(pwd) \
+	  --env=NODE_ENV=development \
+	  --env-file=/etc/environment \
+	  --workdir=/data$(pwd) \
+	  node npm install
 
 image:
-	docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION) .
+	@docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
 restart:
 	@docker restart hipstack
@@ -53,14 +62,11 @@ run:
 	@sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
-		--entrypoint=${CONTAINER_ENTRYPOINT} \
-		--publish=80 \
-		--workdir=/var/www \
-		--env=HOME=/home/hipstack \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@docker logs ${CONTAINER_NAME}
 
 release:
-	docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	echo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	echo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
