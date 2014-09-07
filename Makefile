@@ -3,7 +3,7 @@
 ##
 ##  export BUILD_ORGANIZATION=hipstack
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.2
+##  export BUILD_VERSION=0.1.3
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:latest .
 ##
@@ -19,7 +19,7 @@
 
 BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
-BUILD_VERSION				          ?=0.1.2
+BUILD_VERSION				          ?=0.1.3
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal

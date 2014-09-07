@@ -6,7 +6,7 @@
 ##  export BUILD_VERSION=0.1.2
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
-##  docker run --rm --volume=$(pwåd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
+##  docker run --rm --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
 ##
 ## @ver 0.2.1
 ## @author potanin@UD
@@ -20,6 +20,7 @@ USER          root
 VOLUME        /home/hipstack/.packages
 VOLUME        /home/hipstack/.composer
 VOLUME        /home/hipstack/.composer/cache
+VOLUME        /var/log
 VOLUME        /var/www
 VOLUME        /var/data
 
@@ -41,7 +42,7 @@ RUN           \
 RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
               export NODE_ENV=development && \
-              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz && \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz php5-mysql && \
               npm install -g forever mocha should chai grunt-cli express && \
               a2enmod \
                 dbd \
@@ -106,6 +107,7 @@ RUN           \
               chown -R hipstack:hipstack   /var/run/apache2 && \
               chown -R hipstack:hipstack   /var/run/hipstack && \
               chown -R hipstack:hipstack   /var/www && \
+              chown -R hipstack:hipstack   /home/hipstack && \
               chmod g-w /var/www && \
               chmod g+s /var/www && \
               chown hipstack /var/log/pagespeed && \
@@ -141,7 +143,7 @@ ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
 ENV           HHVM_RUN_GROUP                  hhvm
 ENV           HHVM_RUN_USER                   hipstack
-ENV           COMPOSER_HOME                   /home/hipstack/composer
+ENV           COMPOSER_HOME                   /home/hipstack/.composer
 ENV           COMPOSER_NO_INTERACTION         true
 
 WORKDIR       /var/www
