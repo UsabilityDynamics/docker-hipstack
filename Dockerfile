@@ -23,13 +23,6 @@ VOLUME        /home/hipstack/.composer/cache
 VOLUME        /var/www
 VOLUME        /var/data
 
-ADD           bin                                   /usr/local/src/hipstack/bin
-ADD           lib                                   /usr/local/src/hipstack/lib
-ADD           static/etc                            /usr/local/src/hipstack/static/etc
-ADD           static/public                         /usr/local/src/hipstack/static/public
-ADD           package.json                          /usr/local/src/hipstack/package.json
-ADD           readme.md                             /usr/local/src/hipstack/readme.md
-
 RUN           \
               groupadd --gid 500 hipstack && \
               useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
@@ -51,6 +44,7 @@ RUN           \
               apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz && \
               npm install -g forever mocha should chai grunt-cli express && \
               a2enmod \
+                dbd \
                 rewrite \
                 headers \
                 remoteip \
@@ -74,6 +68,13 @@ RUN           \
               dpkg -i /tmp/mod-pagespeed.deb && \
               apt-get -f install
 
+ADD           bin                                   /usr/local/src/hipstack/bin
+ADD           lib                                   /usr/local/src/hipstack/lib
+ADD           static/etc                            /usr/local/src/hipstack/static/etc
+ADD           static/public                         /usr/local/src/hipstack/static/public
+ADD           package.json                          /usr/local/src/hipstack/package.json
+ADD           readme.md                             /usr/local/src/hipstack/readme.md
+
 ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
 ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/000-default.conf
 ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
@@ -95,8 +96,8 @@ RUN           \
               mkdir -p /var/cache/hipstack && \
               mkdir -p /var/run/hipstack && \
               mkdir -p /var/run/supervisord && \
-              mkdir -p /var/log/supervisord && \
-              chown -R hipstack:hipstack   /var/log/supervisord && \
+              mkdir -p /var/log/supervisor && \
+              chown -R hipstack:hipstack   /var/log/supervisor && \
               chown -R apache:hipstack     /var/log/pagespeed && \
               chown -R apache:hipstack     /var/log/apache2 && \
               chown -R hhvm:hipstack       /var/log/hhvm && \

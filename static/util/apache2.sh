@@ -73,3 +73,5 @@ a2enmod \
   userdir \
   usertrack \
   xml2enc
+
+service apache2 restart

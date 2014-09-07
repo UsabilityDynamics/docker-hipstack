@@ -14,7 +14,7 @@
 ## Ensure these essential directories exist
 [ -d /var/log/hhvm ]          ||  mkdir /var/log/hhvm           2> /dev/null
 [ -d /var/log/apache2 ]       ||  mkdir /var/log/apache2        2> /dev/null
-[ -d /var/log/supervisord ]   ||  mkdir /var/log/supervisord    2> /dev/null
+[ -d /var/log/supervisor ]    ||  mkdir /var/log/supervisor    2> /dev/null
 [ -d /var/log/pagespeed ]     ||  mkdir /var/log/pagespeed      2> /dev/null
 
 ## Fix ownership on web files
@@ -22,7 +22,7 @@ chown -R hipstack:hipstack    /home/hipstack
 chown -R hipstack:hipstack    /var/www
 chown -R apache:hipstack      /var/log/apache2
 chown -R apache:hipstack      /var/log/pagespeed
-chown -R apache:hipstack      /var/log/supervisord
+chown -R apache:hipstack      /var/log/supervisor
 chown -R hhvm:hipstack        /var/log/hhvm
 
 ## No Argumens, start service and bash.
