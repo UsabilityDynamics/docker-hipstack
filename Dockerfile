@@ -17,11 +17,11 @@ FROM          dockerfile/nodejs
 MAINTAINER    Usability Dynamics, Inc. "http://usabilitydynamics.com"
 USER          root
 
-VOLUME        /var/tmp
-VOLUME        /var/log
 VOLUME        /home/hipstack/.packages
 VOLUME        /home/hipstack/.composer
 VOLUME        /home/hipstack/.composer/cache
+VOLUME        /var/www
+VOLUME        /var/data
 
 ADD           bin                                   /usr/local/src/hipstack/bin
 ADD           lib                                   /usr/local/src/hipstack/lib
@@ -124,6 +124,10 @@ RUN           \
               npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
               rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+              rm -rf /var/run/hhvm/** && \
+              rm -rv /var/log/hhvm/** && \
+              rm -rv /var/run/apache2/** && \
+              rm -rv /var/log/apache2/** && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 

@@ -25,12 +25,6 @@ chown -R apache:hipstack      /var/log/pagespeed
 chown -R apache:hipstack      /var/log/supervisord
 chown -R hhvm:hipstack        /var/log/hhvm
 
-## Cleanup
-rm -rf /var/run/hhvm/**       2>  /dev/null
-rm -rv /var/log/hhvm/**       2>  /dev/null
-rm -rf /var/run/apache2/**    2>  /dev/null
-rm -rv /var/log/apache2/**    2>  /dev/null
-
 ## No Argumens, start service and bash.
 if [ "$*" == "" ] || [ ${1} == "/bin/bash" ]; then
 
