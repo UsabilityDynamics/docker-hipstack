@@ -23,7 +23,7 @@
     "reload": "hipstack reload",
     "restart": "hipstack restart",
     "stop": "hipstack stop",
-    "test": "hipstack test"
+    "test": "mocha"
   },
   "preferGlobal": true,
   "bin": {
