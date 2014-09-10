@@ -42,9 +42,9 @@ RUN           \
 RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
               export NODE_ENV=development && \
-              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz php5-mysql && \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev mysql-client php5-mysql && \
               apt-get -y -f install curl libcurl3 libcurl3-dev php5-curl && \
-              npm install -g forever mocha should chai grunt-cli express && \
+              npm install -g forever mocha should chai grunt-cli && \
               a2enmod \
                 dbd \
                 rewrite \
