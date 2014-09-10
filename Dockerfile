@@ -43,10 +43,12 @@ RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
               export NODE_ENV=development && \
               apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev graphviz php5-mysql && \
+              apt-get -y -f install curl libcurl3 libcurl3-dev php5-curl && \
               npm install -g forever mocha should chai grunt-cli express && \
               a2enmod \
                 dbd \
                 rewrite \
+                ssl \
                 headers \
                 remoteip \
                 proxy \
@@ -129,8 +131,6 @@ RUN           \
               rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
               rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
               rm -rf /var/run/hhvm/** && \
-              rm -rv /var/log/hhvm/** && \
-              rm -rv /var/log/apache2/** && \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
@@ -148,6 +148,6 @@ ENV           COMPOSER_NO_INTERACTION         true
 
 WORKDIR       /var/www
 
-ENTRYPOINT    [ "/usr/local/bin/hipstack.entrypoint" ]
-CMD           [ "/bin/bash" ]
+ENTRYPOINT    /usr/local/bin/hipstack.entrypoint
+CMD           /bin/bash
 

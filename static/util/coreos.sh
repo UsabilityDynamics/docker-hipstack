@@ -12,38 +12,41 @@
 alias make="docker run --rm \
   --env-file=/etc/environment \
   --env=HOME=/root \
+  --env=WP_ENV=development \
+  --env=NODE_ENV=development \
+  --env=PHP_ENV=development \
   --volume=/root:/root \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  andypotanin/node make ${@}"
+  andypotanin/builder make ${@}"
 
 ## NPM commands
 alias npm="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  andypotanin/node npm ${@}"
+  andypotanin/builder npm ${@}"
 
 ## Node commands
 alias node="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  andypotanin/node node ${@}"
+  andypotanin/builder node ${@}"
 
 ## Creates container and keeps it while Nano is open.
 alias nano="docker run --rm -ti \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  andypotanin/node nano ${@}"
+  andypotanin/builder nano ${@}"
 
 ## Mocha Tests
 alias mocha="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  andypotanin/node mocha ${@}"
+  andypotanin/builder mocha ${@}"
 
 ## ComposerJS
 alias composer="docker run --rm \
@@ -52,18 +55,18 @@ alias composer="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  usabilitydynamics/hipstack composer ${@}"
+  hipstack/hipstack composer ${@}"
 
 ## HipStack CLI
 alias hipstack="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/var/www \
   --workdir=/var/www \
-  usabilitydynamics/hipstack hipstack ${@}"
+  hipstack/hipstack hipstack ${@}"
 
 ## PHP CLI
 alias hhvm="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/var/www \
   --workdir=/var/www \
-  usabilitydynamics/hipstack hhvm ${@}"
+  hipstack/hipstack hhvm ${@}"
