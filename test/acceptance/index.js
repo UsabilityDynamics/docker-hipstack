@@ -5,11 +5,6 @@
 module.exports = {
   HipStack: {
 
-    "Testing /functional": function( done ) {
-
-      done();
-
-    }
 
   }
 };

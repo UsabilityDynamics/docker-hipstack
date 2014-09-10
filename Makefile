@@ -69,6 +69,7 @@ runTestContainer:
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=/home/ubuntu/docker-hipstack/test/functional/fixtures:/var/www/functional:ro \
+		--volume=/home/ubuntu/docker-hipstack/test/acceptance/fixtures:/var/www/acceptance:ro \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):test
 	@echo "Running on $(docker port ${CONTAINER_NAME} 80)."
 
