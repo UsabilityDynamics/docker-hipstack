@@ -46,6 +46,7 @@ export PHP_ENV="$(echo ${PHP_ENV})"
 export WP_DEBUG="$(echo ${WP_DEBUG})"
 ```
 
+### CI Make Commands
 ```
 make dockerImage;
 make runTestContainer;

@@ -3,7 +3,7 @@
 ##
 ##  export BUILD_ORGANIZATION=hipstack
 ##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.5
+##  export BUILD_VERSION=$(hipstack -V)
 ##
 ##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:latest .
 ##
@@ -19,7 +19,7 @@
 
 BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
-BUILD_VERSION				          ?=0.1.5
+BUILD_VERSION				          ?=$(shell hipstack -V)
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal
@@ -71,4 +71,4 @@ dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
-	@docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	#@docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
