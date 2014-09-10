@@ -80,6 +80,7 @@ ADD           static/etc/init.d/hipstack.sh         /etc/init.d/hipstack
 ADD           static/public                         /var/www
 
 RUN           \
+              mkdir -p /var/www && \
               mkdir -p /var/run/hhvm && \
               mkdir -p /var/log/hhvm && \
               mkdir -p /var/log/apache2 && \
