@@ -24,6 +24,8 @@ dependencies:
     - cd ~/${CIRCLE_PROJECT_REPONAME} && npm link
   post:
     - make dockerImage;
+    - make runTestContainer;
+    - mocha test/functional;
 
 deployment:
   develop:
