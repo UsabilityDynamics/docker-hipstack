@@ -45,3 +45,8 @@ export NODE_ENV="$(echo ${NODE_ENV})"
 export PHP_ENV="$(echo ${PHP_ENV})"
 export WP_DEBUG="$(echo ${WP_DEBUG})"
 ```
+
+```
+make dockerImage;
+make runTestContainer;
+```
