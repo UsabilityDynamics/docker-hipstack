@@ -11,14 +11,16 @@ machine:
     site3.com: 127.0.0.1
   environment:
     BUILD_BRANCH: ${CIRCLE_BRANCH}
-    NODE_ENV=development
+    PHP_ENV: development
+    NODE_ENV: development
 
 dependencies:
   pre:
     - docker login --username=${DOCKER_HUB_USERNAME} --email=${DOCKER_HUB_EMAIL} --password=${DOCKER_HUB_PASSWORD}
-    - mysql -e 'CREATE USER edm_cluster IDENTIFIED BY "Gbq@anViLNsa";' -uroot;
-    - mysql -e 'GRANT ALL PRIVILEGES ON *.* TO edm_cluster;' -uroot;
-    - mysql -e 'GRANT ALL PRIVILEGES ON edm_cluster.* TO edm_cluster' -uroot;
+    - mysql -e 'CREATE DATABASE hipstack;' -uroot;
+    - mysql -e 'CREATE USER hipstack IDENTIFIED BY "hipstack";' -uroot;
+    - mysql -e 'GRANT ALL PRIVILEGES ON *.* TO hipstack;' -uroot;
+    - mysql -e 'GRANT ALL PRIVILEGES ON hipstack.* TO hipstack' -uroot;
     - cd ~/{CIRCLE_PROJECT_REPONAME} && npm link
   post:
     - make dockerImage;
