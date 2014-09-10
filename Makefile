@@ -44,12 +44,6 @@ start:
 	@docker rm -f ${CONTAINER_NAME}
 	run
 
-tests:
-	@echo "Testing HipStack <${BUILD_BRANCH}> branch."
-	@mocha test/unit
-	@mocha test/functional
-	@mocha test/integration
-
 run:
 	@echo "Running ${CONTAINER_NAME}."
 	@echo "Checking and dumping previous runtime. $(shell docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
@@ -58,7 +52,7 @@ run:
 		--hostname=${CONTAINER_HOSTNAME} \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):_testing
 	@docker logs ${CONTAINER_NAME}
 
 runTestContainer:
@@ -70,7 +64,7 @@ runTestContainer:
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=/home/ubuntu/docker-hipstack/test/functional/fixtures:/var/www/functional:ro \
 		--volume=/home/ubuntu/docker-hipstack/test/acceptance/fixtures:/var/www/acceptance:ro \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):test
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):_testing
 	@echo "Running on $(docker port ${CONTAINER_NAME} 80)."
 
 dockerRelease:
