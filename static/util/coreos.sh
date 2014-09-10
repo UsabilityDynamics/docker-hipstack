@@ -55,7 +55,7 @@ alias composer="docker run --rm \
   --env-file=/etc/environment \
   --volume=$(pwd):/data$(pwd) \
   --workdir=/data$(pwd) \
-  hipstack/hipstack composer ${@}"
+  andypotanin/builder composer ${@}"
 
 ## HipStack CLI
 alias hipstack="docker run --rm \
@@ -70,3 +70,13 @@ alias hhvm="docker run --rm \
   --volume=$(pwd):/var/www \
   --workdir=/var/www \
   hipstack/hipstack hhvm ${@}"
+
+## WP CLI
+alias wp="docker run --rm \
+  --user=apache \
+  --env-file=/etc/environment \
+  --volume=$(pwd):/var/www \
+  --workdir=/var/www \
+  --env=PHP_ENV=production \
+  --env=WP_ENV=production \
+  hipstack/wordpress wp ${@}"

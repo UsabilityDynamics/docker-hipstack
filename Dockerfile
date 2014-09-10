@@ -135,7 +135,6 @@ RUN           \
               chmod +x /etc/init.d/**
 
 EXPOSE        80
-EXPOSE        9000
 
 ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
