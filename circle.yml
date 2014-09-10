@@ -2,23 +2,33 @@ machine:
   node:
     version: v0.11.13
   services:
+    - mysql
+    - elasticsearch
     - docker
   hosts:
     site1.com: 127.0.0.1
     site2.com: 127.0.0.1
     site3.com: 127.0.0.1
+  environment:
+    BUILD_BRANCH: ${CIRCLE_BRANCH}
+    NODE_ENV=development
 
 dependencies:
   pre:
     - docker login --username=${DOCKER_HUB_USERNAME} --email=${DOCKER_HUB_EMAIL} --password=${DOCKER_HUB_PASSWORD}
-    - NODE_ENV=development npm link
+    - mysql -e 'CREATE USER edm_cluster IDENTIFIED BY "Gbq@anViLNsa";' -uroot;
+    - mysql -e 'GRANT ALL PRIVILEGES ON *.* TO edm_cluster;' -uroot;
+    - mysql -e 'GRANT ALL PRIVILEGES ON edm_cluster.* TO edm_cluster' -uroot;
+    - cd ~/{CIRCLE_PROJECT_REPONAME} && npm link
+  post:
+    - make dockerImage;
 
 deployment:
   develop:
     branch: develop
     commands:
-      - grunt deploy --branch develop
+      - make dockerRelease;
   master:
     branch: master
     commands:
-      - grunt deploy --branch master
+      - make dockerRelease;

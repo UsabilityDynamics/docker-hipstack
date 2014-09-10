@@ -24,13 +24,13 @@ BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack
 CONTAINER_HOSTNAME	          ?=hipstack.internal
 
-default: image
+default: dockerImage
 
 install:
 	@echo "Installing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@npm install
 
-image:
+dockerImage:
 	@echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
@@ -61,7 +61,7 @@ run:
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@docker logs ${CONTAINER_NAME}
 
-release:
+dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
