@@ -52,7 +52,7 @@ run:
 		--hostname=${CONTAINER_HOSTNAME} \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):_testing
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@docker logs ${CONTAINER_NAME}
 
 runTestContainer:
@@ -64,7 +64,7 @@ runTestContainer:
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=/home/ubuntu/docker-hipstack/test/functional/fixtures:/var/www/functional:ro \
 		--volume=/home/ubuntu/docker-hipstack/test/acceptance/fixtures:/var/www/acceptance:ro \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):_testing
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@echo "Running on $(docker port ${CONTAINER_NAME} 80)."
 
 dockerRelease:
