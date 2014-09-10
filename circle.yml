@@ -21,7 +21,7 @@ dependencies:
     - mysql -e 'CREATE USER hipstack IDENTIFIED BY "hipstack";' -uroot;
     - mysql -e 'GRANT ALL PRIVILEGES ON *.* TO hipstack;' -uroot;
     - mysql -e 'GRANT ALL PRIVILEGES ON hipstack.* TO hipstack' -uroot;
-    - cd ~/{CIRCLE_PROJECT_REPONAME} && npm link
+    - cd ~/${CIRCLE_PROJECT_REPONAME} && npm link
   post:
     - make dockerImage;
 
