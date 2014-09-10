@@ -53,13 +53,24 @@ tests:
 run:
 	@echo "Running ${CONTAINER_NAME}."
 	@echo "Checking and dumping previous runtime. $(shell docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
-	@sudo docker run -itd \
+	@docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@docker logs ${CONTAINER_NAME}
+
+runTestContainer:
+	@echo "Running test container."
+	@docker run -itd \
+		--name=${CONTAINER_NAME} \
+		--hostname=${CONTAINER_HOSTNAME} \
+		--env=NODE_ENV=${NODE_ENV} \
+		--env=PHP_ENV=${PHP_ENV} \
+		--volume=/home/ubuntu/docker-hipstack/test/functional/fixtures:/var/www/functional:ro \
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):test
+	@echo "Running on $(docker port ${CONTAINER_NAME} 80)."
 
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
