@@ -22,24 +22,6 @@ module.exports = function( grunt ) {
       all: [ 'test/*.js' ]
     },
 
-    // Generate Static YUI Documentation
-    yuidoc: {
-      compile: {
-        name: '<%= package.name %>',
-        description: '<%= package.description %>',
-        version: '<%= package.version %>',
-        url: '<%= package.homepage %>',
-        logo: 'http://media.usabilitydynamics.com/logo.png',
-        options: {
-          paths: [
-            "./lib",
-            "./bin"
-          ],
-          outdir: './static/codex'
-        }
-      }
-    },
-
     // Watch Files and Trigger Tasks.
     watch: {
       options: {
