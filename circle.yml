@@ -1,0 +1,23 @@
+machine:
+  node:
+    version: v0.11.13
+  services:
+    - docker
+  hosts:
+    site1.com: 127.0.0.1
+    site2.com: 127.0.0.1
+    site3.com: 127.0.0.1
+
+dependencies:
+  pre:
+    - docker login --username=${DOCKER_HUB_USERNAME} --email=${DOCKER_HUB_EMAIL} --password=${DOCKER_HUB_PASSWORD}
+
+deployment:
+  develop:
+    branch: develop
+    commands:
+      - grunt deploy --branch develop
+  master:
+    branch: master
+    commands:
+      - grunt deploy --branch master

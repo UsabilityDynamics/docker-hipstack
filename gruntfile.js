@@ -99,4 +99,8 @@ module.exports = function( grunt ) {
     console.log( 'list server' );
   });
 
+  grunt.registerTask( 'deplay', function() {
+    console.log( 'fake deploying server...' );
+  });
+
 };
