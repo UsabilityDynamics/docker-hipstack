@@ -57,6 +57,7 @@ run:
 
 runTestContainer:
 	@echo "Running test container."
+	@echo "Checking and dumping previous runtime. $(shell docker rm -f ${CONTAINER_NAME}-test 2>/dev/null; true)"
 	@docker run -itd \
 		--name=${CONTAINER_NAME}-test \
 		--hostname=test.${CONTAINER_HOSTNAME} \
