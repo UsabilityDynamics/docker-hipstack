@@ -48,9 +48,6 @@ module.exports = function( grunt ) {
     scope: [ 'devDependencies', 'dependencies' ]
   });
 
-  // Show elapsed time
-  require( 'time-grunt' )(grunt);
-
   // Load Custom Tasks.
   grunt.loadTasks( 'lib/tasks' );
 
