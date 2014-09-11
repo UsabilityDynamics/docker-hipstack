@@ -38,16 +38,14 @@ function checkAsset( url ) {
       method: 'GET'
     }, function( error, req, body ) {
 
-      //req.should.have.property( 'headers' );
-      //req.headers.should.have.property( 'content-type' );
-      //req.headers.should.have.property( 'x-powered-by' );
-
       if( error ) {
         return done( error );
       }
 
-      console.log( 'body', body );
-      console.log( 'req.headers', req.headers );
+      body.should.have.property( 'ok', true );
+      body.should.have.property( 'message' );
+      req.headers.should.have.property( 'via', 'hipstack/v1.0.0' );
+      req.headers.should.have.property( 'content-type', 'application/json' );
 
       return done();
 

@@ -50,4 +50,6 @@ export WP_DEBUG="$(echo ${WP_DEBUG})"
 ```
 make dockerImage;
 make runTestContainer;
+mocha test/functional
+mocha test/acceptance
 ```
