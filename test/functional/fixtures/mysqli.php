@@ -1,18 +1,12 @@
 <?php
-/**
- *
- * $link = mysql_connect( ':/Applications/MAMP/tmp/mysql/mysql.sock', 'root', 'root' );
- * $link = mysql_connect('localhost', 'root', 'root');
- *
- */
 header( 'content-type: application/json' );
 
 $_GET["host"] = $_GET["host"] ? $_GET["host"] : 'localhost';
 $_GET["user"] = $_GET["user"] ? $_GET["user"] : 'root';
-$_GET["password"] = $_GET["password"] ? $_GET["password"] : 'root';
+$_GET["password"] = $_GET["password"] ? $_GET["password"] : '';
+$_GET["database"] = $_GET["database"] ? $_GET["database"] : 'hipstack';
 
-
-$ses = mysql_connect( $_GET["host"], $_GET["user"], $_GET["password"] );
+$ses = mysqli_connect( $_GET["host"],$_GET["user"], $_GET["password"], $_GET["database"] );
 
 if(!$ses){
 
