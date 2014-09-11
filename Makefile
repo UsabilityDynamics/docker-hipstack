@@ -63,7 +63,7 @@ runTestContainer:
 	sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
-		--publish=49180:80 \
+		--publish=127.0.0.1:49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test/functional \

@@ -15,7 +15,7 @@ function checkAsset( url ) {
 
   var request = require( 'request' );
 
-  var _url = [ 'http://0.0.0.0' ];
+  var _url = [ 'http://127.0.0.1' ];
 
   if( process.env.CI_HIPSTACK_CONTAINER_PORT ) {
     _url.push( ':', process.env.CI_HIPSTACK_CONTAINER_PORT )
