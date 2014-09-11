@@ -5,12 +5,22 @@
 module.exports = {
   HipStack: {
 
-    "Testing /functional": checkAsset( "/test/index.php" )
+    "Testing /test/index.php": checkAsset( "/test/index.php" ),
+    "Testing /test/env.php": checkAsset( "/test/env.php" ),
+    "Testing /test/extensions.php": checkAsset( "/test/extensions.php" ),
+    "Testing /test/mysql.php": checkAsset( "/test/mysql.php" )
 
   }
 };
 
 
+/**
+ *
+ * checkAsset( "/test/index.php" )
+ *
+ * @param url
+ * @returns {Function}
+ */
 function checkAsset( url ) {
 
   var request = require( 'request' );
@@ -24,7 +34,7 @@ function checkAsset( url ) {
   }
 
   return function( done ) {
-    console.log( 'checkURL', url );
+    // console.log( 'checkURL', url );
 
     _url.push( url );
 
