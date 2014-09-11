@@ -3,11 +3,10 @@ header( 'content-type: application/json' );
 
 $_GET["host"] = $_GET["host"] ? $_GET["host"] : 'localhost';
 $_GET["user"] = $_GET["user"] ? $_GET["user"] : 'root';
-$_GET["password"] = $_GET["password"] ? $_GET["password"] : 'root';
+$_GET["password"] = $_GET["password"] ? $_GET["password"] : '';
 $_GET["database"] = $_GET["database"] ? $_GET["database"] : 'hipstack';
 
 $ses = mysqli_connect( $_GET["host"],$_GET["user"], $_GET["password"], $_GET["database"] );
-
 
 if(!$ses){
 
