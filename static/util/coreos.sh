@@ -21,6 +21,7 @@ function make {
     --volume=/tmp:/tmp \
     --volume=/opt/sources:/opt/sources \
     --volume=/var/lib/docker:/var/lib/docker \
+    --volume=/var/run/:/var/run \
     --volume=/root:/root \
     --volume=$(pwd):/data$(pwd) \
     --workdir=/data$(pwd) \

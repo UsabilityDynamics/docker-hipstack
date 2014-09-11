@@ -61,11 +61,12 @@ runTestContainer:
 	@sudo docker run -itd \
 		--name=${CONTAINER_NAME}-test \
 		--hostname=test.${CONTAINER_HOSTNAME} \
+		--publish=80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=/home/ubuntu/docker-hipstack/test:/var/www/test \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest /bin/bash
-	@echo "Running on $(sudo docker port ${CONTAINER_NAME} 80)."
+	@echo "Running on $(shell sudo docker port ${CONTAINER_NAME} 80)."
 
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
