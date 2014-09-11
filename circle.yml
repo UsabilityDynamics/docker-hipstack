@@ -33,7 +33,9 @@ deployment:
     branch: develop
     commands:
       - make dockerRelease;
+      - grunt deployment --branch=${CIRCLE_BRANCH} --version=$(hipstack -V);
   master:
     branch: master
     commands:
       - make dockerRelease;
+      - grunt deployment --branch=${CIRCLE_BRANCH} --version=$(hipstack -V);

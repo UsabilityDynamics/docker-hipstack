@@ -55,21 +55,24 @@ run:
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@sudo docker logs ${CONTAINER_NAME}
 
+#
+# docker port ${CONTAINER_NAME} 80
+#
 runTestContainer:
-	@echo "Running test container."
 	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
-	@sudo docker run -itd \
+	sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
-		--publish=80 \
+		--publish=49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		--volume=/home/ubuntu/docker-hipstack/test:/var/www/test \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest /bin/bash
-	@echo "Running on $(shell sudo docker port ${CONTAINER_NAME} 80)."
+		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test/functional \
+		--volume=$(shell pwd)/test/acceptance/fixtures:/var/www/test/acceptance \
+		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
+	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
 
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
-	sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
-	sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	#sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)

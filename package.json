@@ -39,6 +39,7 @@
     "grunt-requirejs": "~0.4.0",
     "jscoverage": "~0.3.8",
     "mocha": "^1.21.4",
+    "request": "^2.42.0",
     "should": "~2.1.1"
   },
   "readmeFilename": "readme.md",
@@ -60,6 +61,7 @@
     "grunt": "^0.4.5",
     "load-grunt-tasks": "^0.6.0",
     "lodash": "^2.4.1",
-    "node-yaml-config": "0.0.2"
+    "node-yaml-config": "0.0.2",
+    "request": "^2.42.0"
   }
 }

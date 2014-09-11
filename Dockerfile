@@ -21,6 +21,7 @@ RUN           \
               groupadd --gid 500 hipstack && \
               useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
               mkdir /home/hipstack/.ssh && \
+
               useradd -G hipstack apache && \
               useradd -G hipstack hhvm
 
@@ -139,9 +140,7 @@ ENV           HHVM_RUN_USER                   hipstack
 ENV           COMPOSER_HOME                   /home/hipstack/.composer
 ENV           COMPOSER_NO_INTERACTION         true
 
-VOLUME        /home/hipstack/.packages
-VOLUME        /home/hipstack/.composer
-VOLUME        /home/hipstack/.composer
+VOLUME        /home/hipstack
 VOLUME        /var/log
 VOLUME        /var/www
 VOLUME        /var/data
