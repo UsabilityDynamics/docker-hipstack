@@ -148,6 +148,6 @@ VOLUME        /var/data
 
 WORKDIR       /var/www
 
-ENTRYPOINT    /usr/local/bin/hipstack.entrypoint
-CMD           /bin/bash
+ENTRYPOINT    [ "/usr/local/bin/hipstack.entrypoint" ]
+CMD           [ "/bin/bash" ]
 
