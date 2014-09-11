@@ -1,5 +1,5 @@
 <?php
-
+header( 'content-type: application/json' );
 $ses = mysqli_connect("localhost","hipstack", "hipstack", "hipstack");
 
 if(!$ses){

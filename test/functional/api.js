@@ -34,13 +34,17 @@ function checkAsset( url ) {
 
     request({
       url: _url,
+      json: true,
       method: 'GET'
     }, function( error, req, body ) {
 
-      req.should.have.property( 'headers' );
-      req.headers.should.have.property( 'content-type' );
-      req.headers.should.have.property( 'x-powered-by' );
+      //req.should.have.property( 'headers' );
+      //req.headers.should.have.property( 'content-type' );
+      //req.headers.should.have.property( 'x-powered-by' );
 
+      console.log( 'error', error );
+      console.log( 'body', body );
+      console.log( 'req.headers', req.headers );
 
       if( done ) {
         return done();
