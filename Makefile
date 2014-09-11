@@ -21,8 +21,8 @@ BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
 BUILD_VERSION				          ?=$(shell hipstack -V)
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
-CONTAINER_NAME			          ?=hipstack
-CONTAINER_HOSTNAME	          ?=hipstack.internal
+CONTAINER_NAME			          ?=hipstack.test
+CONTAINER_HOSTNAME	          ?=hipstack.test
 
 default: dockerImage
 
@@ -57,10 +57,10 @@ run:
 
 runTestContainer:
 	@echo "Running test container."
-	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME}-test 2>/dev/null; true)"
+	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
 	@sudo docker run -itd \
-		--name=${CONTAINER_NAME}-test \
-		--hostname=test.${CONTAINER_HOSTNAME} \
+		--name=${CONTAINER_NAME} \
+		--hostname=${CONTAINER_HOSTNAME} \
 		--publish=80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
