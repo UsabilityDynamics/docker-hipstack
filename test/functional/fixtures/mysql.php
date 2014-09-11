@@ -1,7 +1,7 @@
 <?php
 header( 'content-type: application/json' );
 
-$ses = mysqli_connect("localhost","hipstack", "hipstack", "hipstack");
+$ses = mysqli_connect( $_GET["host"],$_GET["user"], $_GET["password"], $_GET["database"] );
 
 
 if(!$ses){

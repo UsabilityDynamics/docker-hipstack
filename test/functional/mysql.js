@@ -4,9 +4,7 @@
  */
 module.exports = {
   HipStack: {
-    "Testing /test/index.php": checkAsset( "/test/index.php" ),
-    "Testing /test/env.php": checkAsset( "/test/env.php" ),
-    "Testing /test/extensions.php": checkAsset( "/test/extensions.php" )
+    "Testing /test/mysql.php": checkAsset( "/test/mysql.php" )
   }
 };
 
@@ -42,7 +40,13 @@ function checkAsset( url ) {
     request({
       url: _url,
       json: true,
-      method: 'GET'
+      method: 'GET',
+      qs: {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'hipstack'
+      }
     }, function( error, req, body ) {
 
       if( error ) {
