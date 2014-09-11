@@ -15,16 +15,16 @@ function checkAsset( url ) {
 
   var request = require( 'request' );
 
+  var _url = [ 'http://0.0.0.0' ];
+
+  if( process.env.CI_HIPSTACK_CONTAINER_PORT ) {
+    _url.push( ':', process.env.CI_HIPSTACK_CONTAINER_PORT )
+  } else {
+    _url.push( ':', 49180 );
+  }
+
   return function( done ) {
     console.log( 'checkURL', url );
-
-    var _url = [ 'http://0.0.0.0' ];
-
-    if( process.env.CI_HIPSTACK_CONTAINER_PORT ) {
-      _url.push( ':', process.env.CI_HIPSTACK_CONTAINER_PORT )
-    } else {
-      _url.push( ':', 49180 );
-    }
 
     _url.push( url );
 
@@ -50,9 +50,7 @@ function checkAsset( url ) {
         return done();
       }
 
-    })
-
-    //done();
+    });
 
   }
 
