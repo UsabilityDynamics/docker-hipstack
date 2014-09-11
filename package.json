@@ -4,7 +4,6 @@
   "description": "Docker container bootstrapper.",
   "main": "lib/hipstack.js",
   "directories": {
-    "doc": "static/codex",
     "etc": "static/etc",
     "bin": "bin",
     "lib": "lib",
