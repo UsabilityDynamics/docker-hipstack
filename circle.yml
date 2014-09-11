@@ -23,21 +23,24 @@ dependencies:
     - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'hipstack'@'127.0.0.1';" -uroot;
     - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'hipstack'@'%';" -uroot;
     - mysql -e "FLUSH PRIVILEGES" -uroot;
-    #- mysql -e "SHOW DATABASES" -uroot;
-    #- mysql -e "SELECT user FROM mysql.user" -uroot;
     - cd ~/${CIRCLE_PROJECT_REPONAME} && npm link
   post:
     - make dockerImage;
     - make runTestContainer;
 
+test:
+  pre:
+    #- mysql -e "SHOW DATABASES" -uroot;
+    #- mysql -e "SELECT user FROM mysql.user" -uroot;
+
 deployment:
   develop:
-    branch: develop
+    branch: [production,master,latest]
     commands:
       - make dockerRelease;
       - grunt deployment --branch=${CIRCLE_BRANCH} --version=$(hipstack -V);
-  master:
-    branch: master
+  staging:
+    branch: [staging,develop]
     commands:
       - make dockerRelease;
       - grunt deployment --branch=${CIRCLE_BRANCH} --version=$(hipstack -V);
