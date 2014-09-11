@@ -3,6 +3,7 @@ header( 'content-type: application/json' );
 
 $_response = array(
   "ok" => true,
+  "message" => "PHP extensions.",
   "extensions" => get_loaded_extensions()
 );
 

@@ -3,6 +3,7 @@ header( 'content-type: application/json' );
 
 $_response = array(
   "ok" => true,
+  "message" => "env vars",
   "env" => $_ENV,
   "server" => $_SERVER,
 
