@@ -5,7 +5,7 @@
 module.exports = {
   HipStack: {
 
-    "Testing /functional": checkAsset( "/test/functional/index.php" )
+    "Testing /functional": checkAsset( "/test/index.php" )
 
   }
 };

@@ -66,8 +66,7 @@ runTestContainer:
 		--publish=127.0.0.1:49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test/functional \
-		--volume=$(shell pwd)/test/acceptance/fixtures:/var/www/test/acceptance \
+		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
 
