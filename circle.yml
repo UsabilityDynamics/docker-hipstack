@@ -29,8 +29,6 @@ dependencies:
   post:
     - make dockerImage;
     - make runTestContainer;
-    # - mocha test/functional;
-    # - mocha test/acceptance;
 
 deployment:
   develop:

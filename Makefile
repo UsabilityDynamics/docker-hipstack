@@ -42,9 +42,9 @@ stop:
 
 start:
 	@sudo docker rm -f ${CONTAINER_NAME}
-	run
+	runContainer
 
-run:
+runContainer:
 	@echo "Running ${CONTAINER_NAME}."
 	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
 	@sudo docker run -itd \
