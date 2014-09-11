@@ -42,13 +42,14 @@ function checkAsset( url ) {
       //req.headers.should.have.property( 'content-type' );
       //req.headers.should.have.property( 'x-powered-by' );
 
-      console.log( 'error', error );
+      if( error ) {
+        return done( error );
+      }
+
       console.log( 'body', body );
       console.log( 'req.headers', req.headers );
 
-      if( done ) {
-        return done();
-      }
+      return done();
 
     });
 

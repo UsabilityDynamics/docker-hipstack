@@ -141,7 +141,6 @@ ENV           COMPOSER_HOME                   /home/hipstack/.composer
 ENV           COMPOSER_NO_INTERACTION         true
 
 VOLUME        /home/hipstack
-VOLUME        /var/run
 VOLUME        /var/lib
 VOLUME        /var/log
 
