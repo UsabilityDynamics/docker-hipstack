@@ -73,6 +73,7 @@ ADD           package.json                          /usr/local/src/hipstack/pack
 ADD           readme.md                             /usr/local/src/hipstack/readme.md
 
 ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
+ADD           static/etc/apache2/envvars.sh         /etc/apache2/envvars
 ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/000-default.conf
 ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
 ADD           static/etc/default/apache2.sh         /etc/default/apache2
