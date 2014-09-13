@@ -76,6 +76,7 @@ ADD           static/etc                            /usr/local/src/hipstack/stat
 ADD           static/public                         /usr/local/src/hipstack/static/public
 ADD           package.json                          /usr/local/src/hipstack/package.json
 ADD           readme.md                             /usr/local/src/hipstack/readme.md
+ADD           .bashrc                               /root/bashrc
 
 ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
 ADD           static/etc/apache2/envvars.sh         /etc/apache2/envvars
