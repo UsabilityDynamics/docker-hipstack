@@ -49,7 +49,6 @@ function node {
 
 }
 
-
 ## Creates container and keeps it while Nano is open.
 function nano {
 
@@ -72,7 +71,6 @@ function mocha {
 
 }
 
-
 ## ComposerJS
 function composer {
 
@@ -86,7 +84,6 @@ function composer {
 
 }
 
-
 ## WP CLI
 function wp {
 
@@ -99,7 +96,6 @@ function wp {
     --env=WP_ENV=production \
     hipstack/wordpress wp ${@}
 }
-
 
 alias rm='rm -i'
 alias cp='cp -i'
