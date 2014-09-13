@@ -143,10 +143,16 @@ ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
 ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
-ENV           HHVM_RUN_GROUP                  hhvm
+ENV           HHVM_RUN_GROUP                  hipstack
 ENV           HHVM_RUN_USER                   hipstack
 ENV           COMPOSER_HOME                   /home/hipstack/.composer
 ENV           COMPOSER_NO_INTERACTION         true
+ENV           APACHE_RUN_USER                 apache
+ENV           APACHE_RUN_GROUP                hipstack
+ENV           APACHE_LOG_DIR                  /var/log/apache2
+ENV           APACHE_LOCK_DIR                 /var/lock/apache2
+ENV           APACHE_PID_FILE                 /var/run/apache2/apache.pid
+ENV           APACHE_RUN_DIR                  /var/run/apache2
 
 VOLUME        /home/hipstack
 VOLUME        /var/lib
