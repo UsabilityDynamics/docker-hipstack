@@ -1,5 +1,7 @@
 <?php
-header( 'content-type: application/json' );
+/**
+ *
+ */
 
 $_response = array(
   "ok" => true,
@@ -7,4 +9,5 @@ $_response = array(
   "extensions" => get_loaded_extensions()
 );
 
+header( 'content-type: application/json' );
 die( json_encode( $_response, JSON_PRETTY_PRINT ) );

@@ -1,10 +1,15 @@
 <?php
-header( 'content-type: application/json' );
+/**
+ * Test MYSQLI Connectivity.
+ *
+ * For obvious reasons this should not be mounted when in production.
+ *
+ */
 
-$_GET["host"] = $_GET["host"] ? $_GET["host"] : 'localhost';
-$_GET["user"] = $_GET["user"] ? $_GET["user"] : 'root';
-$_GET["password"] = $_GET["password"] ? $_GET["password"] : '';
-$_GET["database"] = $_GET["database"] ? $_GET["database"] : 'hipstack';
+$_GET[ "host" ]       = $_GET["host"] ? $_GET["host"] : 'localhost';
+$_GET[ "user" ]       = $_GET["user"] ? $_GET["user"] : 'root';
+$_GET[ "password" ]   = $_GET["password"] ? $_GET["password"] : '';
+$_GET[ "database" ]   = $_GET["database"] ? $_GET["database"] : 'hipstack';
 
 $ses = mysqli_connect( $_GET["host"],$_GET["user"], $_GET["password"], $_GET["database"] );
 
@@ -26,4 +31,5 @@ if(!$ses){
 
 }
 
+header( 'content-type: application/json' );
 die( json_encode( $_result, JSON_PRETTY_PRINT ) );
