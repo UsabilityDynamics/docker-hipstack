@@ -17,7 +17,13 @@
 [ -d /var/log/supervisor ]    ||  mkdir /var/log/supervisor     2> /dev/null
 [ -d /var/log/pagespeed ]     ||  mkdir /var/log/pagespeed      2> /dev/null
 
-## No Argumens, start service and bash.
+## Fix Ownership
+chown -R 33 /var/www && \
+chown -R 33 /var/storage && \
+chmod g-w /var/www && \
+chmod g+s /var/www
+
+## No Arguments, start service and bash.
 if [ "$*" == "" ] || [ ${1} == "/bin/bash" ]; then
 
   if [ -f "/usr/bin/supervisord" ]; then

@@ -21,8 +21,9 @@ BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
 BUILD_VERSION				          ?=$(shell hipstack -V)
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
-CONTAINER_NAME			          ?=hipstack.test
-CONTAINER_HOSTNAME	          ?=hipstack.test
+CONTAINER_NAME			          ?=hipstack.dev
+CONTAINER_HOSTNAME	          ?=hipstack.dev
+PWD                           ?=/opt/sources/Hipstack/hipstack
 
 default:
 	@make dockerImage
@@ -61,17 +62,20 @@ runContainer:
 # docker port ${CONTAINER_NAME} 80
 #
 runTestContainer:
-	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
+	@echo "Running ${CONTAINER_NAME}. Mounting ${PWD} to /usr/local/share/proxy as read-only."
+	@echo "Checking and dumping previous runtime [$(shell docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)]."
 	sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
-		--hostname=${CONTAINER_HOSTNAME}.dev \
+		--hostname=${CONTAINER_HOSTNAME} \
 		--publish=127.0.0.1:49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
-		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test \
+		--volume=${PWD}/test/functional/fixtures:/var/www/test \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
+	@sleep 1
+	@docker logs ${CONTAINER_NAME}
+	@curl 127.0.0.1:49180/test/status.php
 	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
-	@curl localhost 127.0.0.1:49180:80/test/status.php
 
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."

@@ -138,6 +138,9 @@ RUN           \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
+ONBUILD       rm -rf /tmp/**
+ONBUILD       rm -rf /var/www/**
+
 EXPOSE        80
 
 ENV           NODE_ENV                        production
