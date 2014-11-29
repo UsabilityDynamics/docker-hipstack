@@ -24,7 +24,9 @@ BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack.test
 CONTAINER_HOSTNAME	          ?=hipstack.test
 
-default: dockerImage
+default:
+	@make dockerImage
+	@make runTestContainer
 
 install:
 	@echo "Installing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
@@ -62,13 +64,14 @@ runTestContainer:
 	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
 	sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
-		--hostname=${CONTAINER_HOSTNAME} \
+		--hostname=${CONTAINER_HOSTNAME}.dev \
 		--publish=127.0.0.1:49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=$(shell pwd)/test/functional/fixtures:/var/www/test \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
+	@curl localhost 127.0.0.1:49180:80/test/status.php
 
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."

@@ -36,7 +36,7 @@ RUN           \
 RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
               export NODE_ENV=development && \
-              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev mysql-client php5-mysql && \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev mysql-client php5-mysql make libpcre3-dev && \
               apt-get -y -f install curl libcurl3 libcurl3-dev php5-curl && \
               npm install -g forever mocha should chai grunt-cli && \
               a2enmod \
@@ -44,6 +44,7 @@ RUN           \
                 rewrite \
                 ssl \
                 headers \
+                expires \
                 remoteip \
                 proxy \
                 vhost_alias
@@ -154,8 +155,7 @@ ENV           APACHE_LOCK_DIR                 /var/lock/apache2
 ENV           APACHE_PID_FILE                 /var/run/apache2/apache.pid
 ENV           APACHE_RUN_DIR                  /var/run/apache2
 
-VOLUME        /home/hipstack
-VOLUME        /var/lib
+VOLUME        /var/lib/hipstack
 VOLUME        /var/log
 
 WORKDIR       /var/www
