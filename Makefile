@@ -88,3 +88,12 @@ release:
 	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@make remove
+
+##
+##
+##
+remove:
+	@echo "Stopping development instances ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}."
+	@docker stop ${CONTAINER_NAME} 2>/dev/null; true
+	@docker rm -f ${CONTAINER_NAME} 2>/dev/null; true
