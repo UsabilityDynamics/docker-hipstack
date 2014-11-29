@@ -16,11 +16,12 @@
 [ -d /var/log/apache2 ]       ||  mkdir /var/log/apache2        2> /dev/null
 [ -d /var/log/supervisor ]    ||  mkdir /var/log/supervisor     2> /dev/null
 [ -d /var/log/pagespeed ]     ||  mkdir /var/log/pagespeed      2> /dev/null
+[ -d /var/www ]               ||  mkdir /var/www                2> /dev/null
 
-## Fix Ownership
-chown -R 33 /var/www && \
-chmod g-w /var/www && \
-chmod g+s /var/www
+## Fix Ownership (may be read-only)
+# chown -R 33 /var/www && \
+# chmod g-w /var/www && \
+# chmod g+s /var/www
 
 ## No Arguments, start service and bash.
 if [ "$*" == "" ] || [ ${1} == "/bin/bash" ]; then

@@ -23,63 +23,65 @@ BUILD_VERSION				          ?=$(shell hipstack -V)
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack.dev
 CONTAINER_HOSTNAME	          ?=hipstack.dev
-PWD                           ?=/opt/sources/Hipstack/hipstack
+CONTAINER_ADDRESS             ?=$(shell docker port hipstack.dev 80)
+HOST_PWD                      ?=/opt/sources/Hipstack/hipstack
 
 default:
-	@make dockerImage
-	@make runTestContainer
+	@make image
+	@make run
 
 install:
 	@echo "Installing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@npm install
 
-dockerImage:
+image:
 	@echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
-	@sudo docker build -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
+	@sudo docker build --rm --quiet=true -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
-restart:
-	@sudo docker restart ${CONTAINER_NAME}
-
-stop:
-	@sudo docker stop ${CONTAINER_NAME}
-
-start:
-	@sudo docker rm -f ${CONTAINER_NAME}
-	runContainer
-
-runContainer:
-	@echo "Running ${CONTAINER_NAME}."
-	@echo "Checking and dumping previous runtime. $(shell sudo docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)"
-	@sudo docker run -itd \
-		--name=${CONTAINER_NAME} \
-		--hostname=${CONTAINER_HOSTNAME} \
-		--env=NODE_ENV=${NODE_ENV} \
-		--env=PHP_ENV=${PHP_ENV} \
-		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
-	@sudo docker logs ${CONTAINER_NAME}
-
-#
-# docker port ${CONTAINER_NAME} 80
-#
-runTestContainer:
-	@echo "Running ${CONTAINER_NAME}. Mounting ${PWD} to /usr/local/share/proxy as read-only."
+##
+## docker port ${CONTAINER_NAME} 80
+## @docker rm -f ${CONTAINER_NAME} || true
+run:
+	@echo "Running ${CONTAINER_NAME}. Mounting ${HOST_PWD} to /usr/local/src/hipstack as read-only."
 	@echo "Checking and dumping previous runtime [$(shell docker rm -f ${CONTAINER_NAME} 2>/dev/null; true)]."
-	sudo docker run -itd \
+	@docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
-		--env=NODE_ENV=${NODE_ENV} \
-		--env=PHP_ENV=${PHP_ENV} \
-		--volume=${PWD}/test/functional/fixtures:/var/www/test \
+		--publish=80 \
+		--env=NODE_ENV=develop \
+		--env=PHP_ENV=develop \
+		--volume=${HOST_PWD}/bin:/usr/local/src/hipstack/bin:ro \
+		--volume=${HOST_PWD}/lib:/usr/local/src/hipstack/lib:ro \
+		--volume=${HOST_PWD}/test:/usr/local/src/hipstack/test:ro \
+		--volume=${HOST_PWD}/test/functional/fixtures:/var/www/test:ro \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
-	@echo "Container started, pausing 3 seconds then checking logs.";
-	@sleep 3
-	@docker logs ${CONTAINER_NAME}
-	@curl $(docker port ${CONTAINER_NAME} 80)/test/status.php
-	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
+	@echo "Container started. Use 'make check' to test."
 
+##
+## Not goint to work when called from within a Make container on CoreOS
+##
+check:
+	@echo "Checking uptime."
+	@curl --silent ${CONTAINER_ADDRESS}/test/status.php
+	@curl --silent ${CONTAINER_ADDRESS}/test/status.php?type=apache
+	@curl --silent ${CONTAINER_ADDRESS}/test/status.php?type=php
+	@curl --silent ${CONTAINER_ADDRESS}/test/status.php?type=hhvm
+	@curl --silent ${CONTAINER_ADDRESS}/test/status.php?type=pagespeed
+
+##
+## Not goint to work when called from within a Make container on CoreOS
+##
+phpinfo:
+	@echo "Checking phpinfo."
+	@curl --silent ${CONTAINER_ADDRESS}/test/phpinfo.php
+
+##
+##
+##
+##
 dockerRelease:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
-	#sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)

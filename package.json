@@ -25,7 +25,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "hipstack.entrypoint": "bin/bash/hipstack.entrypoint.sh",
+    "hipstack.entrypoint": "bin/hipstack.entrypoint.sh",
     "hipstack": "bin/hipstack.js"
   },
   "license": "ISC",

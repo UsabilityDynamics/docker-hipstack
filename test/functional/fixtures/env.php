@@ -10,8 +10,7 @@ $_response = array(
   "ok" => true,
   "message" => "Showing all environment variables passed through request stack.",
   "env" => $_ENV,
-  "server" => $_SERVER,
-
+  "server" => $_SERVER
 );
 
 header( 'content-type: application/json' );

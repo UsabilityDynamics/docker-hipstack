@@ -19,9 +19,8 @@ USER          root
 
 RUN           \
               groupadd --gid 500 hipstack && \
-              useradd --create-home     --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500   -g hipstack   hipstack && \
+              useradd --create-home     --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
               mkdir /home/hipstack/.ssh && \
-
               useradd -G hipstack apache && \
               useradd -G hipstack hhvm
 
@@ -50,12 +49,7 @@ RUN           \
                 vhost_alias
 
 RUN           \
-              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN           \
-              curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-              chmod +x wp-cli.phar && \
-              mv wp-cli.phar /usr/local/bin/wp
+              /usr/share/hhvm/install_fastcgi.sh
 
 RUN           \
               pear channel-update pear.php.net && \
@@ -73,16 +67,12 @@ RUN           \
 
 ADD           bin                                   /usr/local/src/hipstack/bin
 ADD           lib                                   /usr/local/src/hipstack/lib
-ADD           static/etc                            /usr/local/src/hipstack/static/etc
-ADD           static/public                         /usr/local/src/hipstack/static/public
+ADD           test                                  /usr/local/src/hipstack/test
+ADD           static                                /usr/local/src/hipstack/static
 ADD           package.json                          /usr/local/src/hipstack/package.json
 ADD           readme.md                             /usr/local/src/hipstack/readme.md
-ADD           static/.bashrc                        /home/hipstack/.bashrc
-ADD           static/.bashrc                        /root/.bashrc
 
 ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
-ADD           static/etc/apache2/envvars.sh         /etc/apache2/envvars
-ADD           static/etc/apache2/default.conf       /etc/apache2/sites-enabled/000-default.conf
 ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
 ADD           static/etc/default/apache2.sh         /etc/default/apache2
 ADD           static/etc/default/hipstack.sh        /etc/default/hipstack
@@ -126,7 +116,8 @@ RUN           \
 
 RUN           \
               export NODE_ENV=production && \
-              npm link /usr/local/src/hipstack && \
+              cd /usr/local/src/hipstack && \
+              npm install --global && \
               update-rc.d hhvm defaults && \
               update-rc.d hipstack defaults
 
@@ -138,6 +129,10 @@ RUN           \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
+ONBUILD       RUN apt-get autoremove
+ONBUILD       RUN apt-get autoclean
+ONBUILD       RUN apt-get clean all
+ONBUILD       RUN npm cache clean
 ONBUILD       RUN rm -rf /tmp/**
 ONBUILD       RUN rm -rf /var/www/**
 
@@ -149,7 +144,6 @@ ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
 ENV           HHVM_RUN_GROUP                  hipstack
 ENV           HHVM_RUN_USER                   hipstack
-ENV           COMPOSER_HOME                   /home/hipstack/.composer
 ENV           COMPOSER_NO_INTERACTION         true
 ENV           APACHE_RUN_USER                 apache
 ENV           APACHE_RUN_GROUP                hipstack
@@ -158,11 +152,12 @@ ENV           APACHE_LOCK_DIR                 /var/lock/apache2
 ENV           APACHE_PID_FILE                 /var/run/apache2/apache.pid
 ENV           APACHE_RUN_DIR                  /var/run/apache2
 
-VOLUME        /var/lib/hipstack
-VOLUME        /var/log
+VOLUME        [ "/var/lib/hipstack" ]
+VOLUME        [ "/var/log" ]
 
 WORKDIR       /var/www
 
-ENTRYPOINT    [ "/usr/local/bin/hipstack.entrypoint" ]
+ENTRYPOINT    [ "/usr/local/src/hipstack/bin/hipstack.entrypoint.sh" ]
+
 CMD           [ "/bin/bash" ]
 
