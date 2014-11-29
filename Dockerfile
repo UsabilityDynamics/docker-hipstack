@@ -138,8 +138,8 @@ RUN           \
               chmod +x /etc/default/** && \
               chmod +x /etc/init.d/**
 
-ONBUILD       rm -rf /tmp/**
-ONBUILD       rm -rf /var/www/**
+ONBUILD       RUN rm -rf /tmp/**
+ONBUILD       RUN rm -rf /var/www/**
 
 EXPOSE        80
 

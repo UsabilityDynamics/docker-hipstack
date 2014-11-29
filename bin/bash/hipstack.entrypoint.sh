@@ -19,7 +19,6 @@
 
 ## Fix Ownership
 chown -R 33 /var/www && \
-chown -R 33 /var/storage && \
 chmod g-w /var/www && \
 chmod g+s /var/www
 

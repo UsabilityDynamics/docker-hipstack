@@ -67,14 +67,14 @@ runTestContainer:
 	sudo docker run -itd \
 		--name=${CONTAINER_NAME} \
 		--hostname=${CONTAINER_HOSTNAME} \
-		--publish=127.0.0.1:49180:80 \
 		--env=NODE_ENV=${NODE_ENV} \
 		--env=PHP_ENV=${PHP_ENV} \
 		--volume=${PWD}/test/functional/fixtures:/var/www/test \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
-	@sleep 1
+	@echo "Container started, pausing 3 seconds then checking logs.";
+	@sleep 3
 	@docker logs ${CONTAINER_NAME}
-	@curl 127.0.0.1:49180/test/status.php
+	@curl $(docker port ${CONTAINER_NAME} 80)/test/status.php
 	@export CI_HIPSTACK_CONTAINER_PORT=$(shell docker port ${CONTAINER_NAME} 80)
 
 dockerRelease:
