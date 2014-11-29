@@ -19,7 +19,7 @@
 
 BUILD_ORGANIZATION	          ?=hipstack
 BUILD_REPOSITORY		          ?=hipstack
-BUILD_VERSION				          ?=$(shell hipstack -V)
+BUILD_VERSION				          ?=0.2.0
 BUILD_BRANCH		              ?=$(shell git branch | sed -n '/\* /s///p')
 CONTAINER_NAME			          ?=hipstack.dev
 CONTAINER_HOSTNAME	          ?=hipstack.dev
@@ -65,6 +65,7 @@ run:
 		--volume=${HOST_PWD}/test:/usr/local/src/hipstack/test:rw \
 		--volume=${HOST_PWD}/test/functional/fixtures:/var/www/test:rw \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
+	@docker logs ${CONTAINER_NAME}
 	@echo "Container started. Use 'make check' to test."
 
 ##
@@ -83,7 +84,7 @@ check:
 ##
 release:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
+	@make image
 	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
-	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
