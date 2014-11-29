@@ -19,7 +19,7 @@ USER          root
 
 RUN           \
               groupadd --gid 500 hipstack && \
-              useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
+              useradd --create-home     --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500   -g hipstack   hipstack && \
               mkdir /home/hipstack/.ssh && \
 
               useradd -G hipstack apache && \
