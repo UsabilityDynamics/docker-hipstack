@@ -1,0 +1,12 @@
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin/bin
+NODE_ENV=production
+PHP_ENV=production
+APACHE_RUN_USER=apache
+APACHE_RUN_GROUP=hipstack
+APACHE_LOG_DIR=/var/log/apache2
+APACHE_LOCK_DIR=/var/lock/apache2
+APACHE_PID_FILE=/var/run/apache2/apache.pid
+APACHE_RUN_DIR=/var/run/apache2
+HHVM_RUN_GROUP=hipstack
+HHVM_RUN_USER=hipstack
+COMPOSER_NO_INTERACTION=true

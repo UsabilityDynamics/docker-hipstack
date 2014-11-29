@@ -26,17 +26,26 @@ CONTAINER_HOSTNAME	          ?=hipstack.dev
 CONTAINER_ADDRESS             ?=$(shell docker port hipstack.dev 80)
 HOST_PWD                      ?=/opt/sources/Hipstack/hipstack
 
+##
+##
+##
 default:
 	@make image
 	@make run
 
+##
+##
+##
 install:
 	@echo "Installing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@npm install
 
+##
+## --form-rm=true
+##
 image:
 	@echo "Building ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
-	@sudo docker build --rm --quiet=true -t $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
+	@sudo docker build --rm=true --quiet=true --tag=$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest .
 
 ##
 ## docker port ${CONTAINER_NAME} 80
@@ -70,17 +79,9 @@ check:
 	@curl --silent ${CONTAINER_ADDRESS}/test/status.php?type=pagespeed
 
 ##
-## Not goint to work when called from within a Make container on CoreOS
-##
-phpinfo:
-	@echo "Checking phpinfo."
-	@curl --silent ${CONTAINER_ADDRESS}/test/phpinfo.php
-
 ##
 ##
-##
-##
-dockerRelease:
+release:
 	@echo "Releasing ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION}."
 	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)

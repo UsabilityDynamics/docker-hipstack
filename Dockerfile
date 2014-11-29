@@ -20,7 +20,7 @@ USER          root
 RUN           \
               groupadd --gid 500 hipstack && \
               useradd --create-home     --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
-              mkdir /home/hipstack/.ssh && \
+              mkdir -p /home/hipstack/.ssh && \
               useradd -G hipstack apache && \
               useradd -G hipstack hhvm
 
@@ -35,9 +35,9 @@ RUN           \
 RUN           \
               export DEBIAN_FRONTEND=noninteractive && \
               export NODE_ENV=development && \
-              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev mysql-client php5-mysql make libpcre3-dev && \
+              apt-get -y -f install hhvm supervisor nano apache2 apache2-mpm-prefork apache2-utils libapache2-mod-php5 php-pear php5-dev mysql-client php5-mysql make libpcre3-dev memcached && \
               apt-get -y -f install curl libcurl3 libcurl3-dev php5-curl && \
-              npm install -g forever mocha should chai grunt-cli && \
+              npm install -g mocha should grunt-cli && \
               a2enmod \
                 dbd \
                 rewrite \
@@ -65,19 +65,30 @@ RUN           \
               dpkg -i /tmp/mod-pagespeed.deb && \
               apt-get -f install
 
-ADD           bin                                   /usr/local/src/hipstack/bin
-ADD           lib                                   /usr/local/src/hipstack/lib
-ADD           test                                  /usr/local/src/hipstack/test
-ADD           static                                /usr/local/src/hipstack/static
-ADD           package.json                          /usr/local/src/hipstack/package.json
-ADD           readme.md                             /usr/local/src/hipstack/readme.md
+ADD           bin /usr/local/src/hipstack/bin
+ADD           lib /usr/local/src/hipstack/lib
+ADD           static /usr/local/src/hipstack/static
+ADD           package.json /usr/local/src/hipstack/package.json
+ADD           readme.md /usr/local/src/hipstack/readme.md
+ADD           static/public /var/www
 
-ADD           static/etc/apache2/apache2.conf       /etc/apache2/apache2.conf
-ADD           static/etc/supervisord.conf           /etc/supervisor/supervisord.conf
-ADD           static/etc/default/apache2.sh         /etc/default/apache2
-ADD           static/etc/default/hipstack.sh        /etc/default/hipstack
-ADD           static/etc/init.d/hipstack.sh         /etc/init.d/hipstack
-ADD           static/public                         /var/www
+ADD           https://gist.github.com/andypotanin/54238c5d0f439e781215/raw/bash.utils.sh /etc/profile.d/bash.utils.sh
+
+RUN           \
+              export NODE_ENV=production && \
+              cd /usr/local/src/hipstack && \
+              npm install --global
+
+#ADD           bin/ lib/ test/ static/ package.json readme.md /usr/local/src/hipstack
+
+RUN           \
+              ln -fs /usr/local/src/hipstack/static/etc/apache2/apache2.conf /etc/apache2/apache2.conf && \
+              ln -fs /usr/local/src/hipstack/static/etc/hhvm/php.ini /etc/hhvm/php.ini && \
+              ln -fs /usr/local/src/hipstack/static/etc/hhvm/server.ini /etc/hhvm/server.ini && \
+              ln -fs /usr/local/src/hipstack/static/etc/supervisord.conf /etc/supervisor/supervisord.conf && \
+              ln -fs /usr/local/src/hipstack/static/etc/default/apache2.sh /etc/default/apache2 && \
+              ln -fs /usr/local/src/hipstack/static/etc/default/hipstack.sh /etc/default/hipstack && \
+              ln -fs /usr/local/src/hipstack/static/etc/default/mod-pagespeed.sh /etc/default/mod-pagespeed
 
 RUN           \
               mkdir -p /var/www && \
@@ -106,6 +117,7 @@ RUN           \
               chown -R hipstack:hipstack   /home/hipstack && \
               chmod g-w /var/www && \
               chmod g+s /var/www && \
+              chmod +x /etc/default && \
               chown hipstack /var/log/pagespeed && \
               chown hipstack /var/log/hipstack && \
               chown hipstack /var/run && \
@@ -114,46 +126,23 @@ RUN           \
               chgrp hipstack /var/cache/hipstack && \
               chgrp hipstack /tmp
 
-RUN           \
-              export NODE_ENV=production && \
-              cd /usr/local/src/hipstack && \
-              npm install --global && \
-              update-rc.d hhvm defaults && \
-              update-rc.d hipstack defaults
-
-RUN           \
-              npm cache clean && apt-get autoremove && apt-get autoclean && apt-get clean && \
-              rm -rf /var/log/*.log /var/log/lastlog /var/log/faillog && \
-              rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-              rm -rf /var/run/hhvm/** && \
-              chmod +x /etc/default/** && \
-              chmod +x /etc/init.d/**
-
 ONBUILD       RUN apt-get autoremove
 ONBUILD       RUN apt-get autoclean
 ONBUILD       RUN apt-get clean all
 ONBUILD       RUN npm cache clean
-ONBUILD       RUN rm -rf /tmp/**
-ONBUILD       RUN rm -rf /var/www/**
+ONBUILD       RUN rm -rf /tmp/* /tmp/** /var/tmp/* /var/tmp/**
+# ONBUILD       RUN rm -rf /var/log/* /var/log/.*
+# ONBUILD       RUN rm -rf /var/www/* /var/www/.*
+ONBUILD       RUN rm -rf /var/run/**/*.pid /var/run/*.pid
 
 EXPOSE        80
 
 ENV           NODE_ENV                        production
 ENV           PHP_ENV                         production
-ENV           APACHE_RUN_USER                 apache
-ENV           APACHE_RUN_GROUP                hipstack
-ENV           HHVM_RUN_GROUP                  hipstack
-ENV           HHVM_RUN_USER                   hipstack
-ENV           COMPOSER_NO_INTERACTION         true
-ENV           APACHE_RUN_USER                 apache
-ENV           APACHE_RUN_GROUP                hipstack
-ENV           APACHE_LOG_DIR                  /var/log/apache2
-ENV           APACHE_LOCK_DIR                 /var/lock/apache2
-ENV           APACHE_PID_FILE                 /var/run/apache2/apache.pid
-ENV           APACHE_RUN_DIR                  /var/run/apache2
 
+VOLUME        [ "/var/lib/memcached" ]
 VOLUME        [ "/var/lib/hipstack" ]
-VOLUME        [ "/var/log" ]
+#VOLUME        [ "/var/log" ]
 
 WORKDIR       /var/www
 

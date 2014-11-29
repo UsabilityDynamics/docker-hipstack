@@ -1,0 +1,44 @@
+ModPagespeed on
+
+# ModPagespeedAllow
+# ModPagespeedAvoidRenamingIntrospectiveJavascript
+# ModPagespeedBeaconUrl
+# ModPagespeedCombineAcrossPaths
+# ModPagespeedCssImageInlineMaxBytes
+# ModPagespeedCssInlineMaxBytes
+# ModPagespeedCssOutlineMinBytes
+# ModPagespeedDisableFilters
+# ModPagespeedDisallow
+# ModPagespeedDomain
+# ModPagespeedEnableFilters
+# ModPagespeedImageInlineMaxBytes
+# ModPagespeedImageLimitOptimizedPercent
+# ModPagespeedImageLimitResizeAreaPercent
+# ModPagespeedJpegRecompressionQuality
+# ModPagespeedJsInlineMaxBytes
+# ModPagespeedJsOutlineMinBytes
+# ModPagespeedLowercaseHtmlNames on
+# ModPagespeedMapOriginDomain
+# ModPagespeedMapRewriteDomain
+# ModPagespeedMaxInlinedPreviewImagesIndex
+# ModPagespeedMinImageSizeLowResolutionBytes
+# ModPagespeedModifyCachingHeaders
+# ModPagespeedRetainComments
+# ModPagespeedRewriteLevel
+#
+#
+# ModPagespeedFetchWithGzip
+# ModPagespeedFetcherTimeoutMs
+# ModPagespeedFileCacheCleanIntervalMs
+# ModPagespeedFileCachePath
+# ModPagespeedFileCacheSizeKb
+# ModPagespeedGeneratedFilePrefix
+# ModPagespeedLRUCacheByteLimit
+# ModPagespeedLRUCacheKbPerProcess
+# ModPagespeedLoadFromFile
+# ModPagespeedNumRewriteThreads
+# ModPagespeedNumExpensiveRewriteThreads
+# ModPagespeedXHeaderValue
+#
+
+ModPagespeedMapProxyDomain target_domain/subdir origin_domain/subdir [rewrite_domain/subdir]

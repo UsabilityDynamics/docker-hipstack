@@ -3,4 +3,4 @@
  * PHP Prepend
  */
 
- die('prepend');
+# die('prepend');
