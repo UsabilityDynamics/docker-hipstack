@@ -50,10 +50,11 @@ run:
 		--publish=80 \
 		--env=NODE_ENV=develop \
 		--env=PHP_ENV=develop \
-		--volume=${HOST_PWD}/bin:/usr/local/src/hipstack/bin:ro \
-		--volume=${HOST_PWD}/lib:/usr/local/src/hipstack/lib:ro \
-		--volume=${HOST_PWD}/test:/usr/local/src/hipstack/test:ro \
-		--volume=${HOST_PWD}/test/functional/fixtures:/var/www/test:ro \
+		--volume=${HOST_PWD}/bin:/usr/local/src/hipstack/bin:rw \
+		--volume=${HOST_PWD}/lib:/usr/local/src/hipstack/lib:rw \
+		--volume=${HOST_PWD}/etc:/usr/local/src/hipstack/etc:rw \
+		--volume=${HOST_PWD}/test:/usr/local/src/hipstack/test:rw \
+		--volume=${HOST_PWD}/test/functional/fixtures:/var/www/test:rw \
 		$(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@echo "Container started. Use 'make check' to test."
 

@@ -19,6 +19,9 @@
 [ -d /var/www ]               ||  mkdir /var/www                2> /dev/null
 
 ## Fix Ownership (may be read-only)
+find /var/www -type d -exec chmod 755 {} +
+find /var/www -type f -exec chmod 644 {} +
+chmod -R u+rwX,go+rX,go-w /var/www
 # chown -R 33 /var/www && \
 # chmod g-w /var/www && \
 # chmod g+s /var/www

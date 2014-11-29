@@ -30,16 +30,14 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "docker-api": "^0.7.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-less": "~0.8.1",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-jscoverage": "~0.0.3",
     "grunt-markdown": "~0.4.0",
     "grunt-mocha-cli": "^1.10.0",
-    "grunt-requirejs": "~0.4.0",
-    "jscoverage": "~0.3.8",
     "mocha": "^1.21.4",
-    "request": "^2.42.0",
+    "request": "^2.49.0",
     "should": "~2.1.1"
   },
   "readmeFilename": "readme.md",
