@@ -1,13 +1,6 @@
 #################################################################
 ## HipStack Dockerfile.
 ##
-##  export BUILD_ORGANIZATION=hipstack
-##  export BUILD_REPOSITORY=hipstack
-##  export BUILD_VERSION=0.1.2
-##
-##  docker build -t ${BUILD_ORGANIZATION}/${BUILD_REPOSITORY}:${BUILD_VERSION} .
-##  docker run --rm --volume=$(pwd):/data$(pwd) --workdir=/data$(pwd) --env=NODE_ENV=development node npm install
-##
 ## @ver 0.2.1
 ## @author potanin@UD
 #################################################################
@@ -19,7 +12,7 @@ USER          root
 
 RUN           \
               groupadd --gid 500 hipstack && \
-              useradd --create-home     --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
+              useradd --create-home --shell /bin/bash --groups adm,sudo,users,www-data,root,ssh --uid 500 -g hipstack hipstack && \
               mkdir -p /home/hipstack/.ssh && \
               useradd -G hipstack apache && \
               useradd -G hipstack hhvm
@@ -29,6 +22,8 @@ RUN           \
               export NODE_ENV=development && \
               wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add - && \
               echo deb http://dl.hhvm.com/ubuntu trusty main | tee /etc/apt/sources.list.d/hhvm.list && \
+              echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list && \
+              wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
               apt-get -y update && \
               apt-get -y upgrade
 
