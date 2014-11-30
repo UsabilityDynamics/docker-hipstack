@@ -87,6 +87,7 @@ release:
 	@make image
 	@sudo docker tag $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
+	@sudo docker push $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):latest
 	@sudo docker rmi $(BUILD_ORGANIZATION)/$(BUILD_REPOSITORY):$(BUILD_VERSION)
 	@make remove
 

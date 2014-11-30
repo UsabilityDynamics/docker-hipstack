@@ -126,8 +126,6 @@ ONBUILD       RUN apt-get autoclean
 ONBUILD       RUN apt-get clean all
 ONBUILD       RUN npm cache clean
 ONBUILD       RUN rm -rf /tmp/* /tmp/** /var/tmp/* /var/tmp/**
-# ONBUILD       RUN rm -rf /var/log/* /var/log/.*
-# ONBUILD       RUN rm -rf /var/www/* /var/www/.*
 ONBUILD       RUN rm -rf /var/run/**/*.pid /var/run/*.pid
 
 EXPOSE        80
@@ -137,7 +135,6 @@ ENV           PHP_ENV                         production
 
 VOLUME        [ "/var/lib/memcached" ]
 VOLUME        [ "/var/lib/hipstack" ]
-#VOLUME        [ "/var/log" ]
 
 WORKDIR       /var/www
 
