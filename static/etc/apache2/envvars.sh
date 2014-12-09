@@ -16,6 +16,9 @@ if [ -f "/etc/environment" ]; then
   . /etc/environment
 fi;
 
+# export APACHE_RUN_USER=apache
+# export APACHE_RUN_GROUP=apache
+
 ## Common
 export PHP_ENV
 export NODE_ENV
@@ -36,8 +39,8 @@ export WP_SITEURL
 export WP_HOME
 
 ## Default
-export APACHE_RUN_USER=hipstack
-export APACHE_RUN_GROUP=hipstack
+export APACHE_RUN_USER=apache
+export APACHE_RUN_GROUP=apache
 export APACHE_PID_FILE=/var/run/apache2/apache2$SUFFIX.pid
 export APACHE_RUN_DIR=/var/run/apache2$SUFFIX
 export APACHE_LOCK_DIR=/var/lock/apache2$SUFFIX

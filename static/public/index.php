@@ -3,6 +3,7 @@
 $_data =  array(
   "ok" => true,
   "data" => array(
+    "hhvm" => defined('HHVM_VERSION') ? true : false,
     "server" => $_SERVER,
     "env" => $_ENV,
     "request" => $_REQUEST

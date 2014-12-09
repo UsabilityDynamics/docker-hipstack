@@ -12,14 +12,17 @@
 ############################################################
 
 ## Ensure these essential directories exist
-[ -d /var/log/hhvm ]          ||  mkdir /var/log/hhvm           2> /dev/null
-[ -d /var/log/apache2 ]       ||  mkdir /var/log/apache2        2> /dev/null
-[ -d /var/log/supervisor ]    ||  mkdir /var/log/supervisor     2> /dev/null
-[ -d /var/log/pagespeed ]     ||  mkdir /var/log/pagespeed      2> /dev/null
-[ -d /var/log/memcached ]     ||  mkdir /var/log/memcached      2> /dev/null
-[ -d /var/lib/memcached ]     ||  mkdir /var/lib/memcached      2> /dev/null
-[ -d /var/lib/php5 ]          ||  mkdir /var/lib/php5           2> /dev/null
-[ -d /var/www ]               ||  mkdir /var/www                2> /dev/null
+##  [ -d /var/log/hhvm ]          ||  mkdir /var/log/hhvm           2> /dev/null
+##  [ -d /var/log/apache2 ]       ||  mkdir /var/log/apache2        2> /dev/null
+##  [ -d /var/log/supervisor ]    ||  mkdir /var/log/supervisor     2> /dev/null
+##  [ -d /var/log/pagespeed ]     ||  mkdir /var/log/pagespeed      2> /dev/null
+##  [ -d /var/log/memcached ]     ||  mkdir /var/log/memcached      2> /dev/null
+##  [ -d /var/lib/php5 ]          ||  mkdir /var/lib/php5           2> /dev/null
+##  [ -d /var/www ]               ||  mkdir /var/www                2> /dev/null
+
+if [[ -e /etc/environment ]]; then
+    source /etc/environment
+fi
 
 ## No Arguments, start service and bash.
 if [ "$*" == "" ] || [ ${1} == "/bin/bash" ]; then
@@ -34,9 +37,9 @@ if [ "$*" == "" ] || [ ${1} == "/bin/bash" ]; then
 fi
 
 ## Fix Ownership (may be read-only)
-find /var/www -type d -exec chmod 755 {} +
-find /var/www -type f -exec chmod 644 {} +
-chmod -R u+rwX,go+rX,go-w /var/www
+# find /var/www -type d -exec chmod 755 {} +
+# find /var/www -type f -exec chmod 644 {} +
+# chmod -R u+rwX,go+rX,go-w /var/www
 # chown -R 33 /var/www && \
 # chmod g-w /var/www && \
 # chmod g+s /var/www

@@ -1,4 +1,5 @@
 .git
+.gitignore
+.gitmodules
 tmp
-static/wiki
 npm-debug.log

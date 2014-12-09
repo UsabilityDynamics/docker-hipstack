@@ -1,5 +1,47 @@
 * If HHVM isn't starting try removing /var/run/hhvm.sock and /var/run/hhvm.pid.
 
+
+### To Do
+* Switch to sock-based FCGI proxy. (http://blakepetersen.io/how-to-set-up-and-configure-hhvm-on-ubuntu-14-04/)
+
+### Users & Services
+
+* newrelic - (103) - newrelic-sysmond
+* apache - (1000) - Apache2, PageSpeed
+* hhvm - (1001) - HHVM
+* memcache - (103) - Memcached 
+* www-data - (33) -
+* root - Supervisord
+* hipstack - (500)
+
+
+### Ports
+
+* localhost:80 - Apache w/ PageSpeed
+* localhost:8080 - Apache w/o PageSpeed
+* localhost:9000 - HHVM
+* localhost:11211 - MemcacheD
+
+### Build Runtime Site
+
+```
+docker run -it --rm \
+  --name=www.financialsocialwork.com \
+  --volume=/root/.ssh:/root/.ssh \
+  --volume=/opt/sources/UsabilityDynamics/www.financialsocialwork.com:/var/www \
+  --volume=/opt/storage/UsabilityDynamics/www.financialsocialwork.com:/var/storage \
+  --add-host=www.financialsocialwork.com:127.0.0.1 \
+  --add-host=www.financialtherapynetwork.com:127.0.0.1 \
+  --add-host=financialtherapynetwork.com:127.0.0.1 \
+  --add-host=financialsocialwork.com:127.0.0.1 \
+  --publish=49164:80 \
+  --env=DOCKER_NAME=www.financialsocialwork.com \
+  --env=DOCKER_IMAGE=usabilitydynamics/www.financialsocialwork.com \
+  --env=DOCKER_HOST=$(hostname -f) \
+  --env=DOCKER_MACHINE=$(hostname -f) \
+  hipstack/hipstack
+```
+
 ### Environment Variables
 ```
 X-HIPSTACK-CONSTANTS={"DB_HOST":"localhost","DB_USER":"user","DB_PASSWORD":"password"}
